@@ -166,7 +166,7 @@ editor" after Claude Code edits — click Reload All.
 
 ## Current build status
 <!-- Claude Code: update this section at the end of each phase -->
-- [ ] Setup: Git + CI + scripts
+- [x] Setup: Git + CI + scripts
 - [ ] MVP Phase 1: Scaffold + interfaces + test project
 - [ ] MVP Phase 2: PlantSpeciesService (TDD)
 - [ ] MVP Phase 3: DatabaseService (TDD)
