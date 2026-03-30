@@ -77,6 +77,13 @@ permissions as a valid app state:
 - One concern per prompt — never combine unrelated features in one session
 - Every phase ends with a passing test run before committing
 
+## Development workflow — always follow this order
+
+1. **Plan mode first** — before writing any code, enter Plan mode (`/plan`). Explore the codebase, design the approach, confirm with the user.
+2. **Development second** — only begin implementation after the plan has been reviewed and approved.
+
+Never skip planning and jump straight to coding, even for small changes.
+
 ## Assumptions policy — strictly enforced
 
 - Never assume anything that has not been explicitly confirmed by the user
