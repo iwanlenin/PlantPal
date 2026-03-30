@@ -6,8 +6,8 @@
 |---|---|---|---|
 | OS | Windows 11 Pro | Yes | Host operating system |
 | IDE | Visual Studio 2022 | Yes | Primary IDE |
-| .NET SDK | .NET 9 | Yes | SDK for building MAUI apps |
-| Target Framework | .NET MAUI 9 | Yes | Cross-platform mobile framework |
+| .NET SDK | .NET 10.0.201 | Yes | SDK for building MAUI apps |
+| Target Framework | .NET MAUI 10 | Yes | Cross-platform mobile framework |
 | Shell / CI Runner | bash (GitHub Actions) | No | CI pipeline (not yet configured) |
 
 ---

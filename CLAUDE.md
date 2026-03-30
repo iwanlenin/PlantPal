@@ -20,7 +20,7 @@ receive reminders when plants need water.
 ## Tech stack
 | Concern | Choice |
 |---|---|
-| Framework | .NET MAUI 9, targeting Android and iOS |
+| Framework | .NET MAUI 10, targeting Android and iOS |
 | Language | C# |
 | Architecture | MVVM — CommunityToolkit.Mvvm |
 | Local DB | SQLite via sqlite-net-pcl |
