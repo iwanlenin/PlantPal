@@ -1,7 +1,7 @@
 # PlantPal — Claude Code Project Context
 
 ## Memory
-See [memory/MEMORY.md](./memory/MEMORY.md) for the index of all remembered rules, feedback, and project context.
+See [.claude/MEMORY.md](./.claude/MEMORY.md) for the index of all remembered rules, feedback, and project context.
 Read it at the start of every session. Update it whenever a new rule or preference is established.
 
 ## Package & environment reference
