@@ -26,8 +26,9 @@ receive reminders when plants need water.
 | Local DB | SQLite via sqlite-net-pcl |
 | Notifications | Plugin.LocalNotification |
 | Icons | MauiIcons.Material |
-| Tests | xUnit + NSubstitute |
+| Tests | xUnit + NSubstitute (confirmed) |
 | CI | GitHub Actions |
+| Models location | Inside main MAUI project — no shared Models project (confirmed) |
 
 ---
 

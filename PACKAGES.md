@@ -31,6 +31,7 @@
 | NSubstitute | — | No | Mocking library |
 | Microsoft.NET.Test.Sdk | — | No | .NET test host |
 | xunit.runner.visualstudio | — | No | VS Test Explorer integration |
+| coverlet.collector | — | No | Code coverage collection |
 
 ---
 

@@ -13,8 +13,8 @@ Solution structure, all interfaces defined, test project wired, NuGet packages i
 We define ALL interfaces before writing a single implementation. This is the foundation of both TDD and good architecture. Every service the app uses will be hidden behind an interface — this means we can swap implementations, mock them in tests, and never couple ViewModels to platform code. Think of interfaces as contracts: "I don't care HOW you store a plant, just that you can Save, Get, Delete it."
 
 ## Decisions required
-1. Confirm: xUnit + NSubstitute for tests (recommended) or NUnit + Moq?
-2. Should the solution also include a shared Models project, or keep models inside the main MAUI project?
+1. ✅ **Confirmed: xUnit + NSubstitute** — modern .NET standard, used by Microsoft. NSubstitute has the cleanest mock syntax.
+2. ✅ **Confirmed: models inside the main MAUI project** — no shared Models project. A separate project only pays off with multiple consumers (e.g. web API + mobile). We have one app.
 
 ## Files to create/modify
 - `PlantPal.sln`
