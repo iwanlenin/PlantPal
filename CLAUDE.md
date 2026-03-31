@@ -103,10 +103,11 @@ Never skip planning and jump straight to coding, even for small changes.
 
 ## Project structure
 ```
-PlantPal/
-  Interfaces/         # All service interfaces
-  Models/             # Plain C# models (Plant, WateringLog, PlantSpecies, etc.)
-  Services/           # Concrete implementations
+PlantPal.Core/        # plain net10.0 classlib — referenced by both app and tests
+  Interfaces/         # All service interfaces (IPlantRepository, INotificationService, etc.)
+  Models/             # Plain C# models (Plant, WateringLog, PlantSpecies, PermissionResult)
+PlantPal/             # .NET MAUI 10 app (net10.0-android;net10.0-ios)
+  Services/           # Concrete implementations of PlantPal.Core interfaces
   ViewModels/         # One ViewModel per page
   Pages/              # XAML pages (UI only, no logic)
   Resources/
@@ -115,7 +116,7 @@ PlantPal/
   Platforms/
     Android/          # Android-specific code (widget, notifications)
     iOS/              # iOS-specific code
-PlantPal.Tests/
+PlantPal.Tests/       # plain net10.0 xUnit project — references PlantPal.Core only
   Services/           # Service unit tests
   ViewModels/         # ViewModel unit tests
   Integration/        # Integration tests (e.g. widget DB query)
@@ -128,7 +129,7 @@ scripts/
 
 ---
 
-## Key interfaces (already defined — do not change signatures without asking)
+## Key interfaces (defined in PlantPal.Core/Interfaces/ — do not change signatures without asking)
 - `IPlantRepository` — CRUD for Plant
 - `IWateringLogRepository` — CRUD for WateringLog
 - `INotificationService` — schedule / cancel reminders

@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./scripts/new-branch.sh \"feature/phase-01-scaffold\")",
+      "Bash(dotnet workload:*)",
+      "Bash(dotnet new:*)",
+      "Bash(dotnet --version)",
+      "Bash(dotnet --list-sdks)",
+      "Bash(dotnet sln:*)",
+      "Bash(ls C:/Development/Claude/PlantApp/*.sln)",
+      "Bash(dotnet add:*)",
+      "Bash(dotnet build:*)",
+      "Bash(./scripts/test-all.sh)",
+      "Bash(./scripts/commit-phase.sh \"feat: Phase 01 — PlantPal.Core, PlantPal, PlantPal.Tests scaffold with all interfaces and models\")"
+    ]
+  }
+}

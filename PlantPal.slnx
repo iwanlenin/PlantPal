@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="PlantPal.Core/PlantPal.Core.csproj" />
+  <Project Path="PlantPal.Tests/PlantPal.Tests.csproj" />
+  <Project Path="PlantPal/PlantPal.csproj" />
+</Solution>

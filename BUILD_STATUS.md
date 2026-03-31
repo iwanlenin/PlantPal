@@ -3,7 +3,7 @@
 <!-- Claude Code: update this checklist at the end of each phase -->
 
 - [x] Setup: Git + CI + scripts
-- [ ] MVP Phase 1: Scaffold + interfaces + test project
+- [x] MVP Phase 1: Scaffold + interfaces + test project
 - [ ] MVP Phase 2: PlantSpeciesService (TDD)
 - [ ] MVP Phase 3: DatabaseService (TDD)
 - [ ] MVP Phase 4: DashboardViewModel (TDD)
