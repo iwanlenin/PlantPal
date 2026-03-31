@@ -1,6 +1,7 @@
 # Memory Index
 
-- [Explain every command before running it](feedback_explain_commands.md) — Always explain what each bash command does before executing it; user needs to understand every step
-- [No workarounds — fix root cause](feedback_no_workarounds.md) — Never use alternative approaches to bypass a problem; identify and fix the actual issue
+All feedback rules and policies are now consolidated in [CLAUDE.md](../CLAUDE.md). Read that file at the start of every session.
+
+## Project references
+
 - [GitHub repository](project_github.md) — https://github.com/iwanlenin/PlantPal, public, owner: iwanlenin
-- [Check for best practices](feedback_best_practices.md) — Always research and apply best practices before writing code, config, or scripts

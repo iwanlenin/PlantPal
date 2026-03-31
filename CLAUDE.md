@@ -102,6 +102,22 @@ Never skip planning and jump straight to coding, even for small changes.
 - Before running any shell command, explain in plain English: what it does, what it changes, and why it is needed at this point
 - This applies to every Bash invocation: git, dotnet, winget, gh, curl, and any other CLI tool
 - Never run a command silently or without prior explanation
+- **Why:** User explicitly requested this. They want to understand every step, not just see results.
+
+## Best practices policy — strictly enforced
+
+- Before writing code, config, or scripts — research and apply industry best practices for the technology in use
+- Don't just make things work — make them right. Consider what the community and official docs recommend.
+- For each new file or decision, ask: are there known pitfalls? Is this the best known approach, not just the first working one?
+- **Why:** User explicitly requested this.
+
+## No workarounds policy — strictly enforced
+
+- When something fails, identify and fix the root cause. Never bypass a problem with an alternative approach.
+- If a command fails due to a missing permission, wrong version, or misconfiguration — stop, explain the root cause, and fix it directly.
+- Ask the user to take corrective action if needed (e.g. update a token scope) rather than switching to a different tool or API.
+- Trial-and-error and workarounds waste time and obscure what is actually happening.
+- **Why:** User explicitly stated this.
 
 ---
 

@@ -26,6 +26,8 @@
 |---|---|---|---|
 | CommunityToolkit.Mvvm | 8.4.2 | Yes | MVVM source generators (`[ObservableProperty]`, `[RelayCommand]`) |
 | CommunityToolkit.Maui | 14.0.1 | Yes | MAUI UI toolkit (snackbar, animations, etc.) |
+| Microsoft.Maui.Controls | 10.0.51 | Yes | Core MAUI controls (pinned explicitly — was `$(MauiVersion)`) |
+| Microsoft.Extensions.Logging.Debug | 10.0.0 | Yes | Debug logging for development builds |
 | sqlite-net-pcl | 1.9.172 | Yes | Local SQLite database access |
 | Plugin.LocalNotification | 14.1.0 | Yes | Local notification scheduling |
 | MauiIcons.Material | — | No | Material icon font for MAUI |

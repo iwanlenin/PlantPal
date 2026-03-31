@@ -17,7 +17,12 @@
       "Bash(git -C \"C:/Development/Claude/PlantApp\" branch --show-current)",
       "Bash(git -C \"C:/Development/Claude/PlantApp\" diff .claude/settings.local.json)",
       "Bash(git -C \"C:/Development/Claude/PlantApp\" diff PlantPal/PlantPal.csproj)",
-      "Bash(git -C \"C:/Development/Claude/PlantApp\" add PlantPal/PlantPal.csproj .claude/settings.local.json)"
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" add PlantPal/PlantPal.csproj .claude/settings.local.json)",
+      "Bash(git -C:*)",
+      "Bash(where gh:*)",
+      "Bash(winget list:*)",
+      "Bash(echo $PATH)",
+      "Read(//c/Users/anysi/**)"
     ]
   }
 }
