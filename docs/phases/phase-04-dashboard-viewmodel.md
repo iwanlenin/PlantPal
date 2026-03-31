@@ -4,81 +4,36 @@
 **Branch:** `feature/phase-04-dashboard-viewmodel`
 **Est. time:** ~45 min
 
----
-
 ## Goal
-DashboardViewModel fully tested with mocked repository — no MAUI dependencies.
-
-## What to teach
-This phase shows TDD's biggest payoff. We test the ViewModel — all the logic of "which plants are due today", "what happens when I tap Water Now" — without ever running the app or touching an emulator. If the logic is wrong, the test tells you in under a second. NSubstitute lets us fake the repository: "pretend GetAllAsync returns this list" and verify "was SaveAsync called exactly once with the updated plant?"
+DashboardViewModel fully tested with mocked dependencies — no MAUI, no emulator needed.
 
 ## Decisions required
 None — proceed once prior phases are green.
+
+## Prior state
+Interfaces from Phase 01 — do not recreate: `IPlantRepository` · `INotificationService` · `INavigationService` · `IPermissionService`
 
 ## Files to create/modify
 - `PlantPal/ViewModels/DashboardViewModel.cs`
 - `PlantPal.Tests/ViewModels/DashboardViewModelTests.cs`
 
-## Prior state
-The following interfaces already exist from Phase 01 — do not recreate them:
-- `IPlantRepository` (`PlantPal/Interfaces/IPlantRepository.cs`)
-- `INotificationService` (`PlantPal/Interfaces/INotificationService.cs`)
-- `INavigationService` (`PlantPal/Interfaces/INavigationService.cs`)
-- `IPermissionService` (`PlantPal/Interfaces/IPermissionService.cs`)
+## Tests (DashboardViewModelTests.cs)
+Setup: NSubstitute mocks for `IPlantRepository`, `INotificationService`, `INavigationService`, `IPermissionService`.
 
-## Claude Code prompt
+Positive: LoadPlantsAsync() calls GetAllAsync() exactly once · plants with NextWaterDate ≤ today → DueTodayPlants · plants with NextWaterDate within 7 days → UpcomingPlants · plants with NextWaterDate > 7 days → neither collection · WaterNowAsync(plant) calls SaveAsync with updated LastWateredDate=today · WaterNowAsync(plant) calls ScheduleReminderAsync with that plant · IsEmpty=true when repo returns empty list · IsEmpty=false when repo returns plants
 
-```
-Explain NSubstitute to me with a short example before we start. Show: how to create a mock,
-how to set up a return value, and how to verify a method was called.
+Negative: WaterNowAsync(null) does not throw · LoadPlantsAsync when repo throws → HasError=true, no crash · notification permission denied → WaterNowAsync still saves (notifications non-blocking)
 
-Then TDD:
-
-STEP 1 — Write tests (PlantPal.Tests/ViewModels/DashboardViewModelTests.cs):
-Setup: mock IPlantRepository, mock INotificationService, mock INavigationService,
-mock IPermissionService.
-
-Positive cases:
-- LoadPlantsAsync() calls repository.GetAllAsync() exactly once
-- Plants with NextWaterDate <= today appear in DueTodayPlants collection
-- Plants with NextWaterDate in next 7 days appear in UpcomingPlants collection
-- Plants with NextWaterDate > 7 days from now appear in neither collection
-- WaterNowAsync(plant) calls repository.SaveAsync() with updated LastWateredDate = today
-- WaterNowAsync(plant) calls notificationService.ScheduleReminderAsync() with the plant
-- IsEmpty is true when repository returns empty list
-- IsEmpty is false when repository returns plants
-
-Negative cases:
-- WaterNowAsync(null) does not throw
-- LoadPlantsAsync() when repository throws: sets HasError = true, does not crash
-- Notification permission denied: WaterNowAsync still saves the plant (notifications are non-blocking)
-
-Run tests — confirm RED.
-
-STEP 2 — Implement PlantPal/ViewModels/DashboardViewModel.cs:
-- Extends ObservableObject (CommunityToolkit.Mvvm)
-- Constructor takes IPlantRepository, INotificationService, INavigationService, IPermissionService
-- Use this. prefix on all private fields
-- [ObservableProperty]: DueTodayPlants, UpcomingPlants, IsEmpty, HasError, IsLoading,
-  ShowNotificationBanner
-- [RelayCommand]: LoadPlantsCommand, WaterNowCommand(Plant plant), AddPlantCommand,
-  OpenPlantCommand(Plant plant)
-- XML doc comments on class and all public members
-
-STEP 3 — Run tests — confirm GREEN.
-STEP 4 — Ask me: are there any loading states or error states you want to handle differently?
-
-Do not create any files not explicitly listed above.
-
-Success condition: ./scripts/test-all.sh is green. Update BUILD_STATUS.md checklist.
-
-Commit: ./scripts/commit-phase.sh "feat: DashboardViewModel with full NSubstitute TDD"
-```
+## Implementation notes
+- Extends `ObservableObject` (CommunityToolkit.Mvvm)
+- `[ObservableProperty]`: `DueTodayPlants`, `UpcomingPlants`, `IsEmpty`, `HasError`, `IsLoading`, `ShowNotificationBanner`
+- `[RelayCommand]`: `LoadPlantsCommand`, `WaterNowCommand(Plant plant)`, `AddPlantCommand`, `OpenPlantCommand(Plant plant)`
 
 ## Success condition
 - All tests in `DashboardViewModelTests.cs` pass
 - `./scripts/test-all.sh` is green
 - `BUILD_STATUS.md` Phase 04 checked
+- Commit: `./scripts/commit-phase.sh "feat: DashboardViewModel with full NSubstitute TDD"`
 
 ## Deviations from plan
 <!-- Fill in after completion -->

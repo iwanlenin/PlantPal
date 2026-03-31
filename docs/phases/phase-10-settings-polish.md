@@ -4,85 +4,50 @@
 **Branch:** `feature/phase-10-settings-polish`
 **Est. time:** ~30 min
 
----
-
 ## Goal
 Settings page, tab bar, app icon, splash screen, Water Now animation. v1.0 complete.
-
-## What to teach
-This phase is about the gap between "it works" and "it feels good." The Water Now animation is a micro-interaction — it gives the user immediate feedback that their tap did something. Small moments like this are what make apps feel native vs built.
 
 ## Decisions required
 None — proceed after all previous phases are green.
 
-## Files to create/modify
-- `PlantPal/Pages/SettingsPage.xaml`
-- `PlantPal/Pages/SettingsPage.xaml.cs`
-- `PlantPal/Pages/PlantListPage.xaml`
-- `PlantPal/Pages/PlantListPage.xaml.cs`
-- `PlantPal/AppShell.xaml` (update — add tabs)
-- `PlantPal/Resources/AppIcon/appicon.svg`
-- `PlantPal/MauiProgram.cs` (splash screen config)
-- `PlantPal/Pages/DashboardPage.xaml.cs` (Water Now animation)
-
 ## Prior state
-The following already exist — do not recreate:
 - All interfaces and services from Phases 01–09
 - `DashboardPage.xaml` from Phase 05
 - `PlantDetailViewModel.cs` from Phase 08
 
-## Claude Code prompt
+## Files to create/modify
+- `PlantPal/Pages/SettingsPage.xaml` + `.xaml.cs`
+- `PlantPal/Pages/PlantListPage.xaml` + `.xaml.cs`
+- `PlantPal/AppShell.xaml` (add tabs)
+- `PlantPal/Resources/AppIcon/appicon.svg`
+- `PlantPal/MauiProgram.cs` (splash screen config)
+- `PlantPal/Pages/DashboardPage.xaml.cs` (Water Now animation)
 
-```
-Build final v1.0 polish:
+## Implementation notes
 
-SettingsPage.xaml:
-- Permissions section:
-  - Notifications row: show current status via IPermissionService (green ✓ or amber ⚠️),
-    "Open Settings" button using AppInfo.ShowSettingsUI() if denied
-  - Photo Access row: same pattern
-- Preferences section:
-  - Reminder time TimePicker (default 09:00, save to Preferences.Set("reminder_time"))
+**SettingsPage.xaml:**
+- Permissions section: Notifications row (green ✓ or amber ⚠️ via `IPermissionService`) + "Open Settings" button using `AppInfo.ShowSettingsUI()` if denied · Photo Access row (same pattern)
+- Preferences section: Reminder time `TimePicker` (default 09:00, `Preferences.Set("reminder_time")`)
 
-AppShell.xaml:
-- Two tabs: Dashboard (plant/leaf icon via MauiIcons.Material), All Plants (list icon)
-- PlantListPage: full list of all plants, swipe-to-delete (calls DeletePlantAsync),
-  tap to navigate to PlantDetailPage
+**AppShell.xaml:** two tabs — Dashboard (leaf icon via MauiIcons.Material) + All Plants (list icon)
 
-App Icon:
-- Create a simple leaf SVG at Resources/AppIcon/appicon.svg
-- Configure ForegroundFile and Color in PlantPal.csproj
+**PlantListPage:** full plant list · swipe-to-delete (calls `DeletePlantAsync`) · tap → PlantDetailPage
 
-Splash screen:
-- Dark green (#0f1a0f) background, white "PlantPal" text
-- Configure in MauiProgram.cs
+**App icon:** simple leaf SVG at `Resources/AppIcon/appicon.svg` · configure `ForegroundFile` and `Color` in `PlantPal.csproj`
 
-"Water Now" button animation in DashboardPage.xaml.cs:
-- On tap: animate button (scale to 1.1, switch to confirmed-green color, text "✓ Done")
-- After 800ms: animate back to normal state
-- Use MAUI animation API: await button.ScaleTo(1.1, 100)
+**Splash screen:** dark green `#0f1a0f` background, white "PlantPal" text · configure in `MauiProgram.cs`
 
-Run full test suite: ./scripts/test-all.sh
-If any tests are failing, fix them before committing.
-
-In Visual Studio: F5 on Android Emulator.
-
-Do not create any files not explicitly listed above.
-
-Success condition: ./scripts/test-all.sh is green. Update BUILD_STATUS.md checklist.
-
-Commit: ./scripts/commit-phase.sh "feat: settings page, tab bar, app icon, polish"
-Create PR: gh pr create --title "v1.0: Full PlantPal Experience" --body "Adds photos, history, widget, settings, polish"
-```
+**Water Now animation (DashboardPage.xaml.cs):** tap → `await button.ScaleTo(1.1, 100)` + confirmed-green color + text "✓ Done" → after 800ms animate back
 
 ## Success condition
-- `./scripts/test-all.sh` is fully green
-- App runs with tab bar, settings page, app icon, splash screen
-- Water Now animation plays correctly
+- `./scripts/test-all.sh` fully green
+- App runs with tab bar, settings page, app icon, splash screen, Water Now animation
 - `BUILD_STATUS.md` Phase 10 checked
+- Commit: `./scripts/commit-phase.sh "feat: settings page, tab bar, app icon, polish"`
+- PR: `gh pr create --title "v1.0: Full PlantPal Experience" --body "Adds photos, history, widget, settings, polish"`
 
 ## Visual Studio steps
-F5 on Android Emulator. Verify: tab bar visible, Settings page opens, app icon appears, splash screen shows on cold launch, Water Now animation plays.
+F5 on Android Emulator. Verify: tab bar visible · Settings page opens · app icon appears · splash screen on cold launch · Water Now animation plays.
 
 ## Deviations from plan
 <!-- Fill in after completion -->

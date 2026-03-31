@@ -22,7 +22,8 @@
       "Bash(where gh:*)",
       "Bash(winget list:*)",
       "Bash(echo $PATH)",
-      "Read(//c/Users/anysi/**)"
+      "Read(//c/Users/anysi/**)",
+      "Bash(wc -l /c/Development/Claude/PlantApp/docs/phases/*.md /c/Development/Claude/PlantApp/CLAUDE.md /c/Development/Claude/PlantApp/PACKAGES.md /c/Development/Claude/PlantApp/REFERENCES.md /c/Development/Claude/PlantApp/.claude/MEMORY.md)"
     ]
   }
 }

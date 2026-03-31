@@ -99,8 +99,9 @@ Never skip planning and jump straight to coding, even for small changes.
 
 ## Command explanation policy — strictly enforced
 
-- Before running any shell command, explain in plain English: what it does, what it changes, and why it is needed at this point
-- This applies to every Bash invocation: git, dotnet, winget, gh, curl, and any other CLI tool
+- Before running any shell command, write **one sentence** explaining what it does and why — format: *"This does X so that Y."*
+- Applies to every Bash invocation: git, dotnet, winget, gh, curl, and any other CLI tool
+- Multi-sentence explanation only for destructive or irreversible commands (e.g. `git reset --hard`, `rm -rf`, registry edits)
 - Never run a command silently or without prior explanation
 - **Why:** User explicitly requested this. They want to understand every step, not just see results.
 
@@ -198,9 +199,30 @@ See [BUILD_STATUS.md](./BUILD_STATUS.md) for the full phase checklist.
 
 ---
 
+## Confirmed — do not re-verify
+
+These facts are confirmed. Never run a command to re-check them:
+
+| Fact | Value |
+|---|---|
+| .NET SDK | 10.0.201 — only SDK installed, no .NET 9 |
+| Solution format | `.slnx` (not `.sln`) — .NET 10 default |
+| Project structure | 3 projects: `PlantPal.Core` / `PlantPal` / `PlantPal.Tests` |
+| Interfaces location | `PlantPal.Core/Interfaces/` |
+| Models location | `PlantPal.Core/Models/` |
+| `gh` full path | `/c/Program Files/GitHub CLI/gh.exe` |
+| GitHub repo | `https://github.com/iwanlenin/PlantPal` |
+| MAUI workload | Installed (confirmed Phase 01) |
+
+Add to this table whenever the user confirms a new fact.
+
+---
+
 ## What to do at the start of every session
-1. Read this file (you are doing that now)
-2. Read [REFERENCES.md](./REFERENCES.md) — know tool paths before running any commands
-3. Check [BUILD_STATUS.md](./BUILD_STATUS.md) to know where we are
+1. Read this file — in the **same message**, also read [REFERENCES.md](./REFERENCES.md) and [BUILD_STATUS.md](./BUILD_STATUS.md) in parallel (one Bash/Read call each, all in the same response)
+2. Read the current phase file from `docs/phases/` in that same parallel batch
+3. Do not read any other files until they are specifically needed
 4. Ask me to confirm which phase we are working on before writing any code
 5. Create a feature branch if one does not exist: `./scripts/new-branch.sh "feature/phase-name"`
+
+**No mid-session re-reads.** If a file was already read this session, use that content. Only re-read to debug a specific failure.

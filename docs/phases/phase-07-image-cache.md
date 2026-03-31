@@ -4,16 +4,16 @@
 **Branch:** `feature/phase-07-image-cache`
 **Est. time:** ~50 min
 
----
-
 ## Goal
 Species thumbnails bundled, detail images downloaded on demand and cached locally, full offline fallback.
 
-## What to teach
-Caching is a classic computer science problem: "store something expensive so you don't have to fetch it again." Our strategy: thumbnails are always offline (bundled in APK). Detail images are downloaded once then stored in CacheDirectory. If offline when first requested, show the bundled thumbnail instead. CacheDirectory is correct here because images can be re-downloaded — we never cache user data there.
-
 ## Decisions required
-1. How long should cached detail images be considered "fresh" before re-downloading? **30 days recommended** — or never expire (simpler, slightly stale images possible). Confirm before proceeding.
+1. How long should cached detail images be considered fresh before re-downloading? **30 days recommended** — or never expire (simpler, slightly stale images possible). Confirm before proceeding.
+
+## Prior state
+- `IImageCacheService` in `PlantPal.Core/Interfaces/IImageCacheService.cs` — do not recreate
+- `IConnectivityService` in `PlantPal.Core/Interfaces/IConnectivityService.cs` — do not recreate
+- Species thumbnails in `PlantPal/Resources/Images/Plants/` from Phase 02
 
 ## Files to create/modify
 - `PlantPal/Services/ImageCacheService.cs`
@@ -21,76 +21,34 @@ Caching is a classic computer science problem: "store something expensive so you
 - `PlantPal/Interfaces/IHttpClientWrapper.cs`
 - `PlantPal.Tests/Services/ImageCacheServiceTests.cs`
 
-## Prior state
-The following already exist — do not recreate:
-- `IImageCacheService` (`PlantPal/Interfaces/IImageCacheService.cs`) from Phase 01
-- `IConnectivityService` (`PlantPal/Interfaces/IConnectivityService.cs`) from Phase 01
-- Species thumbnails in `PlantPal/Resources/Images/Plants/` from Phase 02
+## Tests (ImageCacheServiceTests.cs)
+Mock `IConnectivityService` and `IHttpClientWrapper`.
 
-## Claude Code prompt
+Positive: GetDetailImageAsync when cached → returns local path, no HTTP call · GetDetailImageAsync not cached + online → downloads, saves to `CacheDirectory/plant_images/{key}_detail.jpg`, returns path · GetDetailImageAsync not cached + offline → returns bundled thumbnail, sets IsUsingFallback=true · GetThumbnailPathAsync always returns bundled asset immediately · cached but expired (if expiry chosen) → re-downloads
 
-```
-Explain to me:
-1. The difference between FileSystem.AppDataDirectory and FileSystem.CacheDirectory — when to
-   use each and why images belong in CacheDirectory
-2. Why we mock IConnectivityService in tests rather than actually checking network status
-3. What a "cache miss" vs "cache hit" is in this context
+Negative: HTTP 404 → thumbnail fallback, no crash · network timeout → thumbnail fallback, no crash · GetDetailImageAsync(null) throws ArgumentNullException · GetDetailImageAsync("unknown_key") → returns generic placeholder
 
-Ask me the cache expiry decision before proceeding.
+## Implementation notes
 
-TDD — Write tests first (PlantPal.Tests/Services/ImageCacheServiceTests.cs):
-Mock IConnectivityService and IHttpClientWrapper.
+**IHttpClientWrapper** (`PlantPal/Interfaces/IHttpClientWrapper.cs`): `Task<byte[]> GetBytesAsync(string url)` — injectable HTTP abstraction for testability.
 
-Positive cases:
-- GetDetailImageAsync when cached file exists → returns local path without HTTP request
-- GetDetailImageAsync when not cached and online → downloads, saves to
-  CacheDirectory/plant_images/{key}_detail.jpg, returns local path
-- GetDetailImageAsync when not cached and OFFLINE → returns bundled thumbnail path,
-  sets IsUsingFallback = true
-- GetThumbnailPathAsync always returns local bundled asset path immediately
-- GetDetailImageAsync for cached but expired file → re-downloads (if expiry was chosen)
+**ConnectivityService.cs:** wraps `Connectivity.NetworkAccess`.
 
-Negative cases:
-- GetDetailImageAsync when download fails (HTTP 404) → returns thumbnail fallback, no crash
-- GetDetailImageAsync when download fails (network timeout) → returns thumbnail fallback, no crash
-- GetDetailImageAsync(null) → throws ArgumentNullException
-- GetDetailImageAsync("unknown_key") → returns generic placeholder image
-
-Run — confirm RED.
-
-STEP 2 — Implement:
-
-IHttpClientWrapper (PlantPal/Interfaces/IHttpClientWrapper.cs): injectable HTTP abstraction
-for testability. Task<byte[]> GetBytesAsync(string url).
-
-ConnectivityService.cs: wraps Connectivity.NetworkAccess, implements IConnectivityService.
-this. prefix, XML doc comments.
-
-ImageCacheService.cs implements IImageCacheService:
-- Constructor: IConnectivityService, IHttpClientWrapper, IPlantSpeciesService
-- this. prefix on all fields, XML doc comments
-- Cache path: Path.Combine(FileSystem.CacheDirectory, "plant_images")
-- GetThumbnailPathAsync: returns "plants/{key}_thumb.png" (bundled resource) immediately
-- GetDetailImageAsync:
-  1. Check local cache → return if exists (and not expired per chosen strategy)
+**ImageCacheService.cs:**
+- Cache path: `Path.Combine(FileSystem.CacheDirectory, "plant_images")`
+- `GetThumbnailPathAsync(key)` → returns `"plants/{key}_thumb.png"` immediately
+- `GetDetailImageAsync(key)`:
+  1. Check local cache → return if exists (and fresh per expiry choice)
   2. Check connectivity → if offline: return thumbnail path
-  3. Build Wikipedia image URL via https://en.wikipedia.org/api/rest_v1/page/summary/{slug}
-  4. Download via IHttpClientWrapper → save to cache → return local path
-  5. Any exception → return thumbnail fallback (never crash)
-
-STEP 3 — Run tests — confirm GREEN.
-
-Do not create any files not explicitly listed above.
-
-Success condition: ./scripts/test-all.sh is green. Update BUILD_STATUS.md checklist.
-
-Commit: ./scripts/commit-phase.sh "feat: ImageCacheService with offline fallback and TDD coverage"
-```
+  3. Wikipedia URL: `https://en.wikipedia.org/api/rest_v1/page/summary/{slug}`
+  4. Download via `IHttpClientWrapper` → save to cache → return path
+  5. Any exception → return thumbnail fallback, never crash
 
 ## Success condition
 - All tests in `ImageCacheServiceTests.cs` pass
 - `./scripts/test-all.sh` is green
 - `BUILD_STATUS.md` Phase 07 checked
+- Commit: `./scripts/commit-phase.sh "feat: ImageCacheService with offline fallback and TDD coverage"`
 
 ## Deviations from plan
 <!-- Fill in after completion -->
