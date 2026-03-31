@@ -11,7 +11,13 @@
       "Bash(dotnet add:*)",
       "Bash(dotnet build:*)",
       "Bash(./scripts/test-all.sh)",
-      "Bash(./scripts/commit-phase.sh \"feat: Phase 01 — PlantPal.Core, PlantPal, PlantPal.Tests scaffold with all interfaces and models\")"
+      "Bash(./scripts/commit-phase.sh \"feat: Phase 01 — PlantPal.Core, PlantPal, PlantPal.Tests scaffold with all interfaces and models\")",
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" status)",
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" log --oneline -10)",
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" branch --show-current)",
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" diff .claude/settings.local.json)",
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" diff PlantPal/PlantPal.csproj)",
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" add PlantPal/PlantPal.csproj .claude/settings.local.json)"
     ]
   }
 }
