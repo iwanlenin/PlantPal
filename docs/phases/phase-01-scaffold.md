@@ -1,6 +1,6 @@
 # Phase 01: Solution Scaffold, Interfaces & Test Project
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 **Branch:** `feature/phase-01-scaffold`
 **Est. time:** ~45 min
 
@@ -93,4 +93,7 @@ Commit: git checkout -b feature/phase-01-scaffold && ./scripts/commit-phase.sh "
 - `BUILD_STATUS.md` Phase 01 checked
 
 ## Deviations from plan
-<!-- Fill in after completion -->
+- **3-project structure adopted** — `PlantPal.Core` (net10.0 classlib) added to hold interfaces and models. Original plan had 2 projects with interfaces inside the MAUI app, which causes a TFM mismatch (`net10.0` test project cannot reference `net10.0-android` MAUI app).
+- **.NET 10 instead of .NET 9** — only .NET 10.0.201 SDK is installed on this machine. All TFMs updated to `net10.0`.
+- **Solution file is `.slnx`** — .NET 10's `dotnet new sln` generates the new XML-based `.slnx` format, not the legacy `.sln`. Both work identically with `dotnet sln` and Visual Studio 2022.
+- **`sqlite-net-pcl` also added to `PlantPal.Core`** — required for `[SQLite.PrimaryKey]` and `[SQLite.AutoIncrement]` attribute types used in `Plant.cs` and `WateringLog.cs`.

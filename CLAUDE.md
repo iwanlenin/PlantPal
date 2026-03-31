@@ -8,6 +8,10 @@ Read it at the start of every session. Update it whenever a new rule or preferen
 See [PACKAGES.md](./PACKAGES.md) for all NuGet packages, versions, and dev environment details.
 Keep that file updated whenever packages are added or changed.
 
+## Tool & path reference
+See [REFERENCES.md](./REFERENCES.md) for installed CLI tool paths, shell environment notes, and GitHub details.
+**Never search for tool paths with Bash** — read REFERENCES.md first. Update it when tools are added or paths change.
+
 ---
 
 ## What this project is
@@ -20,7 +24,7 @@ receive reminders when plants need water.
 ## Tech stack
 | Concern | Choice |
 |---|---|
-| Framework | .NET MAUI 9, targeting Android and iOS |
+| Framework | .NET MAUI 10, targeting Android and iOS |
 | Language | C# |
 | Architecture | MVVM — CommunityToolkit.Mvvm |
 | Local DB | SQLite via sqlite-net-pcl |
@@ -103,10 +107,11 @@ Never skip planning and jump straight to coding, even for small changes.
 
 ## Project structure
 ```
-PlantPal/
-  Interfaces/         # All service interfaces
-  Models/             # Plain C# models (Plant, WateringLog, PlantSpecies, etc.)
-  Services/           # Concrete implementations
+PlantPal.Core/        # plain net10.0 classlib — referenced by both app and tests
+  Interfaces/         # All service interfaces (IPlantRepository, INotificationService, etc.)
+  Models/             # Plain C# models (Plant, WateringLog, PlantSpecies, PermissionResult)
+PlantPal/             # .NET MAUI 10 app (net10.0-android;net10.0-ios)
+  Services/           # Concrete implementations of PlantPal.Core interfaces
   ViewModels/         # One ViewModel per page
   Pages/              # XAML pages (UI only, no logic)
   Resources/
@@ -115,7 +120,7 @@ PlantPal/
   Platforms/
     Android/          # Android-specific code (widget, notifications)
     iOS/              # iOS-specific code
-PlantPal.Tests/
+PlantPal.Tests/       # plain net10.0 xUnit project — references PlantPal.Core only
   Services/           # Service unit tests
   ViewModels/         # ViewModel unit tests
   Integration/        # Integration tests (e.g. widget DB query)
@@ -128,7 +133,7 @@ scripts/
 
 ---
 
-## Key interfaces (already defined — do not change signatures without asking)
+## Key interfaces (defined in PlantPal.Core/Interfaces/ — do not change signatures without asking)
 - `IPlantRepository` — CRUD for Plant
 - `IWateringLogRepository` — CRUD for WateringLog
 - `INotificationService` — schedule / cancel reminders
@@ -179,6 +184,7 @@ See [BUILD_STATUS.md](./BUILD_STATUS.md) for the full phase checklist.
 
 ## What to do at the start of every session
 1. Read this file (you are doing that now)
-2. Check [BUILD_STATUS.md](./BUILD_STATUS.md) to know where we are
-3. Ask me to confirm which phase we are working on before writing any code
-4. Create a feature branch if one does not exist: `./scripts/new-branch.sh "feature/phase-name"`
+2. Read [REFERENCES.md](./REFERENCES.md) — know tool paths before running any commands
+3. Check [BUILD_STATUS.md](./BUILD_STATUS.md) to know where we are
+4. Ask me to confirm which phase we are working on before writing any code
+5. Create a feature branch if one does not exist: `./scripts/new-branch.sh "feature/phase-name"`

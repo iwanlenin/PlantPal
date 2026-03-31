@@ -21,7 +21,7 @@ Load only the current phase file at the start of a session — do not load all p
 
 | # | File | Title | Est. Time | Status |
 |---|---|---|---|---|
-| 01 | [phase-01-scaffold.md](phase-01-scaffold.md) | Solution Scaffold, Interfaces & Test Project | ~45 min | ⬜ Pending |
+| 01 | [phase-01-scaffold.md](phase-01-scaffold.md) | Solution Scaffold, Interfaces & Test Project | ~45 min | ✅ Done |
 | 02 | [phase-02-species-service.md](phase-02-species-service.md) | PlantSpeciesService — TDD | ~45 min | ⬜ Pending |
 | 03 | [phase-03-database-service.md](phase-03-database-service.md) | Database Layer — TDD | ~40 min | ⬜ Pending |
 | 04 | [phase-04-dashboard-viewmodel.md](phase-04-dashboard-viewmodel.md) | Dashboard ViewModel — TDD | ~45 min | ⬜ Pending |
