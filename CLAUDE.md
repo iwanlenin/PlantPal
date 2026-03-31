@@ -8,6 +8,10 @@ Read it at the start of every session. Update it whenever a new rule or preferen
 See [PACKAGES.md](./PACKAGES.md) for all NuGet packages, versions, and dev environment details.
 Keep that file updated whenever packages are added or changed.
 
+## Tool & path reference
+See [REFERENCES.md](./REFERENCES.md) for installed CLI tool paths, shell environment notes, and GitHub details.
+**Never search for tool paths with Bash** — read REFERENCES.md first. Update it when tools are added or paths change.
+
 ---
 
 ## What this project is
@@ -180,6 +184,7 @@ See [BUILD_STATUS.md](./BUILD_STATUS.md) for the full phase checklist.
 
 ## What to do at the start of every session
 1. Read this file (you are doing that now)
-2. Check [BUILD_STATUS.md](./BUILD_STATUS.md) to know where we are
-3. Ask me to confirm which phase we are working on before writing any code
-4. Create a feature branch if one does not exist: `./scripts/new-branch.sh "feature/phase-name"`
+2. Read [REFERENCES.md](./REFERENCES.md) — know tool paths before running any commands
+3. Check [BUILD_STATUS.md](./BUILD_STATUS.md) to know where we are
+4. Ask me to confirm which phase we are working on before writing any code
+5. Create a feature branch if one does not exist: `./scripts/new-branch.sh "feature/phase-name"`
