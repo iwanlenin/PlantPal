@@ -18,6 +18,6 @@ git -C "$SCRIPT_DIR/.." add -A
 
 echo "Step 3/3: Committing and pushing..."
 git -C "$SCRIPT_DIR/.." commit -m "$COMMIT_MSG"
-git -C "$SCRIPT_DIR/.." push
+git -C "$SCRIPT_DIR/.." push --set-upstream origin "$(git -C "$SCRIPT_DIR/.." branch --show-current)"
 
 echo "Done. Phase committed and pushed."
