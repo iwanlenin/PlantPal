@@ -1,6 +1,6 @@
 # Phase 05: Dashboard UI + Add Plant Form
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 **Branch:** `feature/phase-05-dashboard-ui`
 **Est. time:** ~50 min
 
@@ -101,4 +101,10 @@ Commit: ./scripts/commit-phase.sh "feat: Dashboard and AddPlant UI with XAML bin
 In Visual Studio 2022: F5 on Android Emulator target. Click "Reload All" if VS detects external file changes.
 
 ## Deviations from plan
-<!-- Fill in after completion -->
+- `AddPlantViewModel` placed in `PlantPal.Core/ViewModels/` (not `PlantPal/ViewModels/`) — same pattern as Phase 04, test project references Core only
+- `DashboardViewModel` also created on this branch since Phase 04 PR not yet merged to main
+- `CommunityToolkit.Mvvm` added to `PlantPal.Core.csproj` for ViewModel source generators
+- `StubNavigationService` replaced with real `ShellNavigationService` using Shell.GoToAsync
+- Added `PlantPal/Converters/ValueConverters.cs` for XAML binding converters (not in original file list)
+- Photo picker not yet wired (requires platform permissions from Phase 06) — placeholder UI shows "Add a botanical portrait"
+- Plant thumbnails use dotnet_bot.png placeholder — real species thumbnails pending image download script
