@@ -1,6 +1,6 @@
 # Phase 04: Dashboard ViewModel — TDD
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 **Branch:** `feature/phase-04-dashboard-viewmodel`
 **Est. time:** ~45 min
 
@@ -16,8 +16,9 @@ This phase shows TDD's biggest payoff. We test the ViewModel — all the logic o
 None — proceed once prior phases are green.
 
 ## Files to create/modify
-- `PlantPal/ViewModels/DashboardViewModel.cs`
+- `PlantPal.Core/ViewModels/DashboardViewModel.cs`
 - `PlantPal.Tests/ViewModels/DashboardViewModelTests.cs`
+- `PlantPal/MauiProgram.cs` (DashboardViewModel registered as Transient)
 
 ## Prior state
 The following interfaces already exist from Phase 01 — do not recreate them:
@@ -81,4 +82,6 @@ Commit: ./scripts/commit-phase.sh "feat: DashboardViewModel with full NSubstitut
 - `BUILD_STATUS.md` Phase 04 checked
 
 ## Deviations from plan
-<!-- Fill in after completion -->
+- `DashboardViewModel` placed in `PlantPal.Core/ViewModels/` (not `PlantPal/ViewModels/`) — test project references Core only, same pattern as Phases 02/03
+- `CommunityToolkit.Mvvm` added to `PlantPal.Core.csproj` — required for `ObservableObject`, `[ObservableProperty]`, `[RelayCommand]` in Core
+- `WaterNowAsync` swallows notification exceptions explicitly — notification failure must never prevent save from completing
