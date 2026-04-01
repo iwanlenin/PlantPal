@@ -1,6 +1,6 @@
 # Phase 03: Database Layer — TDD
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 **Branch:** `feature/phase-03-database-service`
 **Est. time:** ~40 min
 
@@ -85,4 +85,7 @@ Commit: ./scripts/commit-phase.sh "feat: SQLite DatabaseService with TDD coverag
 - `BUILD_STATUS.md` Phase 03 checked
 
 ## Deviations from plan
-<!-- Fill in after completion -->
+- `DatabaseService` placed in `PlantPal.Core/Services/` (not `PlantPal/Services/`) — no MAUI dependencies, test project references Core only
+- Tests use per-test temp files instead of `:memory:` — SQLiteAsyncConnection pools `:memory:` connections causing shared state across tests
+- `SaveAsync` uses separate `Insert`/`Update` instead of `InsertOrReplaceAsync` — avoids SQLite auto-replacing on key collision
+- `SaveAsync` throws `ArgumentException` on null/empty Name — confirmed as cleaner for TDD

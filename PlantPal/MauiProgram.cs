@@ -27,7 +27,8 @@ public static class MauiProgram
 
         // ── Service registrations ──────────────────────────────────────────────
         // Stub implementations registered here will be replaced phase by phase.
-        builder.Services.AddSingleton<IPlantRepository, StubPlantRepository>();
+        var dbPath = Path.Combine(FileSystem.AppDataDirectory, "plantpal.db");
+        builder.Services.AddSingleton<IPlantRepository>(new DatabaseService(dbPath));
         builder.Services.AddSingleton<IWateringLogRepository, StubWateringLogRepository>();
         builder.Services.AddSingleton<INotificationService, StubNotificationService>();
         builder.Services.AddSingleton<IPermissionService, StubPermissionService>();
@@ -46,14 +47,6 @@ public static class MauiProgram
     // ── Stub implementations ───────────────────────────────────────────────────
     // These are temporary placeholders. Each will be replaced with a real
     // implementation in its dedicated phase.
-
-    private sealed class StubPlantRepository : IPlantRepository
-    {
-        public Task<List<Plant>> GetAllAsync() => Task.FromResult(new List<Plant>());
-        public Task<Plant?> GetByIdAsync(int id) => Task.FromResult<Plant?>(null);
-        public Task SaveAsync(Plant plant) => Task.CompletedTask;
-        public Task DeleteAsync(int id) => Task.CompletedTask;
-    }
 
     private sealed class StubWateringLogRepository : IWateringLogRepository
     {
