@@ -1,6 +1,6 @@
 # Phase 03: Database Layer — TDD
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 **Branch:** `feature/phase-03-database-service`
 **Est. time:** ~40 min
 
@@ -16,8 +16,9 @@ Repository pattern separates "how data is stored" from "what the app does with d
 1. SQLite runs on a background thread — should `SaveAsync` throw an exception if validation fails (e.g. empty Name), or return a bool success result? **Exception is cleaner for TDD** — confirm before proceeding.
 
 ## Files to create/modify
-- `PlantPal/Services/DatabaseService.cs`
+- `PlantPal.Core/Services/DatabaseService.cs`
 - `PlantPal.Tests/Services/PlantRepositoryTests.cs`
+- `PlantPal/MauiProgram.cs` (replaced stub with real DatabaseService registration)
 
 ## Prior state
 `IPlantRepository` already exists in `PlantPal/Interfaces/IPlantRepository.cs` from Phase 01.
@@ -85,4 +86,7 @@ Commit: ./scripts/commit-phase.sh "feat: SQLite DatabaseService with TDD coverag
 - `BUILD_STATUS.md` Phase 03 checked
 
 ## Deviations from plan
-<!-- Fill in after completion -->
+- `DatabaseService` placed in `PlantPal.Core/Services/` (not `PlantPal/Services/`) — no MAUI dependencies, test project references Core only
+- Tests use per-test temp files instead of `:memory:` — SQLiteAsyncConnection pools `:memory:` connections causing shared state across tests
+- `SaveAsync` uses separate `Insert`/`Update` instead of `InsertOrReplaceAsync` — avoids SQLite auto-replacing on key collision
+- `SaveAsync` throws `ArgumentException` on null/empty Name — confirmed as cleaner for TDD

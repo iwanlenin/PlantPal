@@ -119,6 +119,7 @@ Never skip planning and jump straight to coding, even for small changes.
 PlantPal.Core/        # plain net10.0 classlib — referenced by both app and tests
   Interfaces/         # All service interfaces (IPlantRepository, INotificationService, etc.)
   Models/             # Plain C# models (Plant, WateringLog, PlantSpecies, PermissionResult)
+  Services/           # MAUI-independent service implementations (DatabaseService, PlantSpeciesService)
 PlantPal/             # .NET MAUI 10 app (net10.0-android;net10.0-ios)
   Services/           # Concrete implementations of PlantPal.Core interfaces
   ViewModels/         # One ViewModel per page

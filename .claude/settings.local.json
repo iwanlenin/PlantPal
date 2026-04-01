@@ -26,7 +26,13 @@
       "Bash(mv add_plant/screen.png add_plant/code.html mockups/mvp-add-plant/)",
       "Bash(mv terra_leaf/DESIGN.md design-spec.md)",
       "Bash(rmdir dashboard_1 dashboard_2 add_plant terra_leaf)",
-      "Bash(git -C \"C:/Development/Claude/PlantApp\" add -A)"
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" add -A)",
+      "Bash(dotnet clean:*)",
+      "Bash(dotnet test:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(./scripts/commit-phase.sh \"feat: SQLite DatabaseService with TDD coverage\")",
+      "Bash(git add:*)",
+      "Bash(git rebase:*)"
     ]
   }
 }

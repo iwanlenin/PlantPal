@@ -18,7 +18,7 @@
 
 | Package | Version | Installed | Description |
 |---|---|---|---|
-| sqlite-net-pcl | 1.9.172 | Yes | SQLite attribute types for model classes |
+| sqlite-net-pcl | 1.9.172 | Yes | SQLite ORM — model attributes and `SQLiteAsyncConnection` for DatabaseService |
 
 ### PlantPal (main app)
 
