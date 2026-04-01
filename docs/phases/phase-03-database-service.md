@@ -16,8 +16,9 @@ Repository pattern separates "how data is stored" from "what the app does with d
 1. SQLite runs on a background thread — should `SaveAsync` throw an exception if validation fails (e.g. empty Name), or return a bool success result? **Exception is cleaner for TDD** — confirm before proceeding.
 
 ## Files to create/modify
-- `PlantPal/Services/DatabaseService.cs`
+- `PlantPal.Core/Services/DatabaseService.cs`
 - `PlantPal.Tests/Services/PlantRepositoryTests.cs`
+- `PlantPal/MauiProgram.cs` (replaced stub with real DatabaseService registration)
 
 ## Prior state
 `IPlantRepository` already exists in `PlantPal/Interfaces/IPlantRepository.cs` from Phase 01.
