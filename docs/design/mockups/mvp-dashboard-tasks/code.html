@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PlantPal Dashboard - Action Focused</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#394d00",
+              "inverse-surface": "#2f312e",
+              "surface-container": "#efeeea",
+              "on-tertiary-fixed": "#151f00",
+              "on-surface-variant": "#42493f",
+              "on-secondary-fixed-variant": "#653d1e",
+              "on-secondary": "#ffffff",
+              "on-primary-container": "#f7fff1",
+              "outline": "#72796e",
+              "tertiary-fixed-dim": "#b0d360",
+              "inverse-on-surface": "#f2f1ed",
+              "on-tertiary": "#ffffff",
+              "tertiary": "#4b6400",
+              "surface-bright": "#faf9f5",
+              "primary": "#396637",
+              "on-secondary-container": "#794e2e",
+              "on-tertiary-container": "#fbffe6",
+              "error-container": "#ffdad6",
+              "error": "#ba1a1a",
+              "secondary-container": "#fdc39a",
+              "on-error-container": "#93000a",
+              "surface-dim": "#dbdad6",
+              "tertiary-container": "#617e10",
+              "on-primary": "#ffffff",
+              "on-secondary-fixed": "#301400",
+              "background": "#faf9f5",
+              "primary-container": "#517f4e",
+              "on-surface": "#1b1c1a",
+              "secondary-fixed-dim": "#f4bb92",
+              "outline-variant": "#c2c9bc",
+              "on-background": "#1b1c1a",
+              "primary-fixed": "#bcf0b4",
+              "on-error": "#ffffff",
+              "surface-variant": "#e3e2df",
+              "secondary": "#805533",
+              "on-primary-fixed-variant": "#245024",
+              "on-primary-fixed": "#002204",
+              "surface-container-low": "#f4f4f0",
+              "inverse-primary": "#a1d39a",
+              "secondary-fixed": "#ffdcc5",
+              "surface-container-high": "#e9e8e4",
+              "surface": "#faf9f5",
+              "surface-container-lowest": "#ffffff",
+              "surface-tint": "#3b693a",
+              "tertiary-fixed": "#ccf078",
+              "surface-container-highest": "#e3e2df",
+              "primary-fixed-dim": "#a1d39a"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            vertical-align: middle;
+        }
+        .bg-botanical-gradient {
+            background: linear-gradient(135deg, #396637 0%, #517f4e 100%);
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<nav class="fixed top-0 w-full z-50 bg-[#faf9f5]/70 backdrop-blur-md">
+<div class="flex items-center justify-between px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#396637] cursor-pointer hover:bg-[#396637]/10 p-2 rounded-full transition-colors active:scale-95 duration-200">menu</span>
+<span class="font-bold tracking-tighter text-xl text-primary">PlantPal</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden cursor-pointer active:scale-95 duration-200">
+<img alt="User" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_mDxg82pNdOcolDAzc9c2w8OVvIycAnImsCt942nowzChVc0OJaWDZCJXf_8l6wb14t0ZT0KrSoVfZBCnRfvP0TNxcwrG88rzEvowY4v14TUrs7j-raSIW6eI-Ay9JBRl-Y4osqpBr_SGqQf2NHORx23gvXmAADv1pvBHBBXM7-Ob7UBXY57eU1WFhL0axDa3FzkvtC4TqghzIDb-PeWZv1ZXwJvjn_FANVsf8uTzw6XrImxvZniqch8DlJ04nWCrQP4JPacWb9o"/>
+</div>
+</div>
+<div class="bg-[#f4f4f0] h-px w-full"></div>
+</nav>
+<main class="pt-20 px-4 max-w-lg mx-auto">
+<header class="py-6 space-y-2">
+<p class="text-primary font-bold tracking-widest uppercase text-[10px]">Action Dashboard</p>
+<h1 class="text-3xl font-extrabold tracking-tight">Today's Tasks</h1>
+</header>
+<section class="space-y-4 mb-10">
+<div class="flex items-center justify-between mb-2">
+<h2 class="text-lg font-bold">Needs Care</h2>
+<span class="px-2 py-1 bg-error-container text-on-error-container text-[10px] font-black rounded-full uppercase tracking-widest">3 Alert</span>
+</div>
+<div class="relative bg-surface-container-lowest border border-error/20 p-5 rounded-[2rem] shadow-sm flex flex-col gap-5">
+<div class="flex gap-4">
+<div class="w-20 h-20 rounded-2xl overflow-hidden shrink-0">
+<img alt="Plant" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFUgUXSVqP8Nh24h6C48C4A60eiSEwv-XfyH9r07SuhMO-jGSe1YixAuP0sdGzE5kY__1yewiHCtrJj7S9I8TSn1TNtO1o7bjkc635g3-VD8QB7gmHr6QUjFymV_QyMlDQ_VeykOz0L6dvVHYUR8bFCRfPZmGyGKaZDNyaX2DvcSKPpCRo0dVaut3CD2KelS4d_pKLCqduCeAQoxNe6ek8X-PA7CDaB0ZIlSfl770hkgD7lCNLbucTsnw6id6vWd56R9bsFWzxRDU"/>
+</div>
+<div class="flex-1 pt-1">
+<div class="flex justify-between items-start">
+<h3 class="text-xl font-extrabold tracking-tight">Monty</h3>
+<span class="text-error font-black text-[10px] uppercase">2 Days Overdue</span>
+</div>
+<p class="text-on-surface-variant text-sm">Monstera • Living Room</p>
+</div>
+</div>
+<button class="w-full py-5 bg-botanical-gradient text-white rounded-2xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-transform shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-2xl">water_drop</span>
+<span class="text-lg">Mark as Watered</span>
+</button>
+<div class="absolute top-4 left-[-2px] w-1 h-12 bg-error rounded-full"></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-[2rem] shadow-sm flex flex-col gap-5 border border-outline-variant/10">
+<div class="flex gap-4">
+<div class="w-20 h-20 rounded-2xl overflow-hidden shrink-0">
+<img alt="Plant" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHeIGcgAHbjj-ZbhJQ3CjadE00CcFDgzeTzNtGDsXXBXh7czcDg2P4A8-sJpUrbEW13gu6F9a7O8Jp9X2HJzcPz_aT43DC3S1sTqGYo7aDQAdUm9xgks9igVOEszWuigf9FFRSfF8_nfwRC43uP-qwSaJSCn1nykDd7QB-KwZ8yi1_RGZKSPuE1pnM4TRMc4US8RmEirCgD-bWtw8CDyOagFPeU028qgRrsaULvHZ4HhLEOoixOwTnUr7pddD48Pp6TA0dROH_pDY"/>
+</div>
+<div class="flex-1 pt-1">
+<div class="flex justify-between items-start">
+<h3 class="text-xl font-extrabold tracking-tight">Ziggy</h3>
+<span class="text-primary font-black text-[10px] uppercase">Today</span>
+</div>
+<p class="text-on-surface-variant text-sm">Snake Plant • Bedroom</p>
+</div>
+</div>
+<button class="w-full py-5 bg-primary text-white rounded-2xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-2xl">water_drop</span>
+<span class="text-lg">Mark as Watered</span>
+</button>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-[2rem] shadow-sm flex flex-col gap-5 border border-outline-variant/10">
+<div class="flex gap-4">
+<div class="w-20 h-20 rounded-2xl overflow-hidden shrink-0">
+<img alt="Plant" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKUYK848Sb39YWJBvikTykBSu_G_a9kHGBdS1t_mm9a7uaFEQDPIBr7mieKeRAh4sn8t0807todXaEODyS_VgPUUXH2ebyXR43S9kCd3MkfrGkLLWrvv13gZTc37EqNFN6X0roTf9ODXiVnJ-zEESaMWN48gyQtKJs2Y_avafaQY9y38t1Pj7vmYhvEXwo60BTxB5CxCRxRNL2miAgQV44A929HhgwvgS9-D8XJxdASQUVzIkopBfq23njXOucDKmQ3mN4qTPuVeU"/>
+</div>
+<div class="flex-1 pt-1">
+<div class="flex justify-between items-start">
+<h3 class="text-xl font-extrabold tracking-tight">Patterns</h3>
+<span class="text-primary font-black text-[10px] uppercase">Today</span>
+</div>
+<p class="text-on-surface-variant text-sm">Calathea • Office</p>
+</div>
+</div>
+<button class="w-full py-5 bg-primary text-white rounded-2xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-2xl">water_drop</span>
+<span class="text-lg">Mark as Watered</span>
+</button>
+</div>
+</section>
+<section class="mb-10">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-bold">Upcoming</h2>
+<a class="text-xs font-bold text-primary" href="#">View All</a>
+</div>
+<div class="flex gap-3 overflow-x-auto hide-scrollbar -mx-4 px-4 pb-4">
+<div class="flex-none w-36 bg-surface-container-low p-3 rounded-2xl">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full uppercase">Tue 14</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm text-on-secondary-container">potted_plant</span>
+</div>
+<p class="font-bold text-sm truncate">Goldie</p>
+</div>
+<p class="text-[10px] text-on-surface-variant truncate">Pothos • Sunroom</p>
+</div>
+<div class="flex-none w-36 bg-surface-container-low p-3 rounded-2xl">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full uppercase">Thu 16</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-8 h-8 rounded-full bg-tertiary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm text-on-tertiary-container">potted_plant</span>
+</div>
+<p class="font-bold text-sm truncate">Prickles</p>
+</div>
+<p class="text-[10px] text-on-surface-variant truncate">Aloe • Kitchen</p>
+</div>
+<div class="flex-none w-36 bg-surface-container-low p-3 rounded-2xl">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full uppercase">Sat 18</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm text-on-primary-container">potted_plant</span>
+</div>
+<p class="font-bold text-sm truncate">Ruby</p>
+</div>
+<p class="text-[10px] text-on-surface-variant truncate">Rubber • Balcony</p>
+</div>
+</div>
+</section>
+<section class="bg-primary/5 p-6 rounded-[2rem] border border-primary/10 mb-8">
+<div class="flex justify-between items-end mb-3">
+<div>
+<h3 class="text-xs font-black uppercase tracking-widest text-primary">Overall Health</h3>
+<p class="text-2xl font-extrabold">72%</p>
+</div>
+<span class="text-[10px] font-bold bg-primary/10 text-primary px-2 py-1 rounded-lg">GREAT PROGRESS</span>
+</div>
+<div class="h-3 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 72%"></div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-white/80 backdrop-blur-lg border-t border-outline-variant/10 z-50">
+<a class="flex flex-col items-center justify-center text-primary" href="#">
+<span class="material-symbols-outlined text-[28px]">home</span>
+<span class="text-[10px] font-bold uppercase mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60" href="#">
+<span class="material-symbols-outlined text-[28px]">potted_plant</span>
+<span class="text-[10px] font-bold uppercase mt-1">Plants</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60" href="#">
+<span class="material-symbols-outlined text-[28px]">settings</span>
+<span class="text-[10px] font-bold uppercase mt-1">Settings</span>
+</a>
+</nav>
+<button class="fixed bottom-28 right-6 w-16 h-16 bg-botanical-gradient text-white rounded-full flex items-center justify-center shadow-2xl active:scale-90 transition-transform z-40">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+
+</body></html>

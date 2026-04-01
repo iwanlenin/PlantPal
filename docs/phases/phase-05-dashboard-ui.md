@@ -12,6 +12,14 @@ Working dashboard and add/edit plant form — app usable end-to-end for the firs
 ## What to teach
 This is the first phase where you'll actually SEE the app running. The ViewModel logic is already proven by tests — the UI just wires up to it. XAML binds directly to ViewModel properties via `{Binding}`. If a binding is wrong, the UI just shows nothing rather than crashing — use the Output window in Visual Studio to catch binding errors.
 
+## Design references
+Before building any UI, read these files:
+- `docs/design/design-system.md` — color tokens, typography, radii
+- `docs/design/design-spec.md` — full component and surface rules
+- `docs/design/mockups/mvp-dashboard-tasks/screen.png` — dashboard variant 1
+- `docs/design/mockups/mvp-dashboard-planner/screen.png` — dashboard variant 2
+- `docs/design/mockups/mvp-add-plant/screen.png` — add plant form mockup
+
 ## Decisions required
 1. Color scheme: the design system uses "The Botanical Archivist" (warm off-white `#faf9f5`, forest green gradient `#396637` → `#517f4e`). Do you want to apply this now, or use a basic theme first and polish in v1.0?
 

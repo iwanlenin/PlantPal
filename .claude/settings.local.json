@@ -20,7 +20,13 @@
       "Bash(git -C \"C:/Development/Claude/PlantApp\" add PlantPal/PlantPal.csproj .claude/settings.local.json)",
       "Bash(git -C \"C:/Development/Claude/PlantApp\" stash pop)",
       "Bash(git -C \"C:/Development/Claude/PlantApp\" stash drop)",
-      "Bash(./scripts/commit-phase.sh \"feat: PlantSpeciesService with 40 species and TDD coverage\")"
+      "Bash(./scripts/commit-phase.sh \"feat: PlantSpeciesService with 40 species and TDD coverage\")",
+      "Bash(mv dashboard_1/screen.png dashboard_1/code.html mockups/mvp-dashboard-tasks/)",
+      "Bash(mv dashboard_2/screen.png dashboard_2/code.html mockups/mvp-dashboard-planner/)",
+      "Bash(mv add_plant/screen.png add_plant/code.html mockups/mvp-add-plant/)",
+      "Bash(mv terra_leaf/DESIGN.md design-spec.md)",
+      "Bash(rmdir dashboard_1 dashboard_2 add_plant terra_leaf)",
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" add -A)"
     ]
   }
 }
