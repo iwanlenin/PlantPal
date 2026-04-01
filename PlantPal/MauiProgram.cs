@@ -2,6 +2,7 @@ using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using PlantPal.Core.Interfaces;
 using PlantPal.Core.Models;
+using PlantPal.Core.Services;
 
 namespace PlantPal;
 
@@ -32,7 +33,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IPermissionService, StubPermissionService>();
         builder.Services.AddSingleton<IImageCacheService, StubImageCacheService>();
         builder.Services.AddSingleton<IConnectivityService, StubConnectivityService>();
-        builder.Services.AddSingleton<IPlantSpeciesService, StubPlantSpeciesService>();
+        builder.Services.AddSingleton<IPlantSpeciesService, PlantSpeciesService>();
         builder.Services.AddSingleton<INavigationService, StubNavigationService>();
 
 #if DEBUG
@@ -88,14 +89,7 @@ public static class MauiProgram
         public bool IsConnected => false;
     }
 
-    private sealed class StubPlantSpeciesService : IPlantSpeciesService
-    {
-        public IReadOnlyList<PlantSpecies> GetAll() => [];
-        public PlantSpecies? FindByName(string? name) => null;
-        public int GetSuggestedInterval(string speciesKey) => 7;
-    }
-
-    private sealed class StubNavigationService : INavigationService
+private sealed class StubNavigationService : INavigationService
     {
         public Task NavigateToAsync(string route, Dictionary<string, object>? parameters = null) => Task.CompletedTask;
         public Task GoBackAsync() => Task.CompletedTask;

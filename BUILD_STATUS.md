@@ -4,7 +4,7 @@
 
 - [x] Setup: Git + CI + scripts
 - [x] MVP Phase 1: Scaffold + interfaces + test project
-- [ ] MVP Phase 2: PlantSpeciesService (TDD)
+- [x] MVP Phase 2: PlantSpeciesService (TDD)
 - [ ] MVP Phase 3: DatabaseService (TDD)
 - [ ] MVP Phase 4: DashboardViewModel (TDD)
 - [ ] MVP Phase 5: Dashboard UI + Add Plant form

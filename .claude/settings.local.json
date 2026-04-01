@@ -17,7 +17,10 @@
       "Bash(git -C \"C:/Development/Claude/PlantApp\" branch --show-current)",
       "Bash(git -C \"C:/Development/Claude/PlantApp\" diff .claude/settings.local.json)",
       "Bash(git -C \"C:/Development/Claude/PlantApp\" diff PlantPal/PlantPal.csproj)",
-      "Bash(git -C \"C:/Development/Claude/PlantApp\" add PlantPal/PlantPal.csproj .claude/settings.local.json)"
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" add PlantPal/PlantPal.csproj .claude/settings.local.json)",
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" stash pop)",
+      "Bash(git -C \"C:/Development/Claude/PlantApp\" stash drop)",
+      "Bash(./scripts/commit-phase.sh \"feat: PlantSpeciesService with 40 species and TDD coverage\")"
     ]
   }
 }
