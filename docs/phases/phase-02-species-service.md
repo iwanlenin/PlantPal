@@ -1,6 +1,6 @@
 # Phase 02: PlantSpeciesService — TDD
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 **Branch:** `feature/phase-02-species-service`
 **Est. time:** ~45 min
 
@@ -98,4 +98,7 @@ Commit: ./scripts/commit-phase.sh "feat: PlantSpeciesService with 40 species and
 - `BUILD_STATUS.md` Phase 02 checked
 
 ## Deviations from plan
-<!-- Fill in after completion -->
+- **Service placed in `PlantPal.Core/Services/`** instead of `PlantPal/Services/` — PlantSpeciesService is pure in-memory logic with zero MAUI dependencies. The test project (`net10.0`) cannot reference the MAUI project (`net10.0-android`), so the implementation must live in Core for tests to reach it directly.
+- **`PlantSpecies.cs` already existed** in `PlantPal.Core/Models/` from Phase 01 — not recreated.
+- **`scripts/download-plant-images.sh` deferred** — thumbnails are not needed until Phase 07 (ImageCacheService). Placeholder asset paths are set in the species data.
+- **Default interval for unknown species: 7 days** — confirmed by interface doc (`GetSuggestedInterval` returns 7 for unknown keys).

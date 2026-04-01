@@ -12,6 +12,15 @@ Keep that file updated whenever packages are added or changed.
 See [REFERENCES.md](./REFERENCES.md) for installed CLI tool paths, shell environment notes, and GitHub details.
 **Never search for tool paths with Bash** — read REFERENCES.md first. Update it when tools are added or paths change.
 
+## Design reference
+See [docs/design/](./docs/design/) for UI design assets:
+- `design-system.md` — concise design token table (colors, radii, typography)
+- `design-spec.md` — full "Botanical Archivist" design spec (surfaces, components, rules)
+- `stitch-prompts.md` — prompts used to generate mockups per version
+- `mockups/` — screen PNGs + HTML source per screen (mvp-dashboard-tasks, mvp-dashboard-planner, mvp-add-plant)
+
+Read the mockup PNGs and design-system.md before building any UI in Phase 05+.
+
 ---
 
 ## What this project is
