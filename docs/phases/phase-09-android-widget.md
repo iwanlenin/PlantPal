@@ -1,6 +1,6 @@
 # Phase 09: Android Home Screen Widget
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 **Branch:** `feature/phase-09-android-widget`
 **Est. time:** ~90 min
 
@@ -88,4 +88,8 @@ Commit: ./scripts/commit-phase.sh "feat: Android home screen widget with hourly 
 F5 on Android Emulator. Long-press home screen → Widgets → find PlantPal widget → add it. Verify count updates when a plant is watered.
 
 ## Deviations from plan
-<!-- Fill in after completion -->
+- `WidgetDbQuery` placed in `PlantPal.Core/Services/` with two overloads: one accepting `SQLiteAsyncConnection` (for tests), one accepting a path string (for the widget) — keeps query logic testable without Android deps
+- Integration tests used unique named in-memory SQLite databases (`file:{guid}?mode=memory&cache=shared`) to avoid sqlite-net-pcl connection pool sharing state between tests
+- Widget style: count only (confirmed by user) — no most-urgent plant name
+- `NotificationService.RescheduleAllAsync` widget refresh not added — widget updates hourly via system alarm; no direct cross-process call needed
+- Added `Resources/drawable/widget_background.xml` (rounded green shape) and `Resources/values/strings.xml` (widget description) — not listed in phase doc but required for the layout and metadata XML

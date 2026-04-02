@@ -3,4 +3,12 @@
     <color name="colorPrimary">#512BD4</color>
     <color name="colorPrimaryDark">#2B0B98</color>
     <color name="colorAccent">#2B0B98</color>
+
+    <!-- Botanical Archivist palette for widget -->
+    <color name="plantpal_primary">#396637</color>
+    <color name="plantpal_primary_dark">#2d5029</color>
+    <color name="plantpal_surface">#faf9f5</color>
+    <color name="plantpal_text_primary">#1b1c1a</color>
+    <color name="plantpal_text_secondary">#5a5d57</color>
+    <color name="plantpal_text_on_primary">#ffffff</color>
 </resources>
