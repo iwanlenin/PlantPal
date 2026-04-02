@@ -33,4 +33,25 @@ public partial class DashboardPage : ContentPage
     /// </summary>
     private void OnNotificationBannerTapped(object? sender, TappedEventArgs e) =>
         AppInfo.ShowSettingsUI();
+
+    /// <summary>
+    /// Animates the "Mark as Watered" button: scales up, turns confirmed-green, then restores.
+    /// </summary>
+    private async void OnWaterNowClicked(object? sender, EventArgs e)
+    {
+        if (sender is not Button button) return;
+
+        var originalBrush = button.Background;
+        var originalText = button.Text;
+
+        await button.ScaleTo(1.1, 100);
+        button.Background = new SolidColorBrush(Color.FromArgb("#4CAF50"));
+        button.Text = "✓ Done";
+
+        await Task.Delay(800);
+
+        button.Text = originalText;
+        button.Background = originalBrush;
+        await button.ScaleTo(1.0, 100);
+    }
 }

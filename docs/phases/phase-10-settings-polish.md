@@ -1,6 +1,6 @@
 # Phase 10: Settings Page + Final Polish
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 **Branch:** `feature/phase-10-settings-polish`
 **Est. time:** ~30 min
 
@@ -85,4 +85,8 @@ Create PR: gh pr create --title "v1.0: Full PlantPal Experience" --body "Adds ph
 F5 on Android Emulator. Verify: tab bar visible, Settings page opens, app icon appears, splash screen shows on cold launch, Water Now animation plays.
 
 ## Deviations from plan
-<!-- Fill in after completion -->
+- `MauiIcons.Material` not installed — used Unicode characters for tab icons (🌱 📋 ⚙) instead
+- `SettingsViewModel.OpenSettingsCommand` raises an event (`OpenSettingsRequested`) instead of calling `AppInfo.ShowSettingsUI()` directly, since Core has no MAUI reference; page code-behind subscribes to the event
+- Reminder time persisted in `SettingsPage.xaml.cs` code-behind via `Preferences.Set/Get` (not in ViewModel) for the same reason
+- Splash screen SVG already had `<MauiSplashScreen>` entry in csproj — only updated Color from `#512BD4` to `#0f1a0f` and replaced the SVG content with a leaf + "PlantPal" text
+- No new tests added — phase is pure UI/polish with no new business logic

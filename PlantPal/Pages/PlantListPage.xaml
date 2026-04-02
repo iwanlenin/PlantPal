@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PlantPal.Core.ViewModels;assembly=PlantPal.Core"
+    xmlns:models="clr-namespace:PlantPal.Core.Models;assembly=PlantPal.Core"
+    x:Class="PlantPal.Pages.PlantListPage"
+    x:DataType="vm:PlantListViewModel"
+    Title="All Plants"
+    BackgroundColor="{StaticResource Background}">
+
+    <Grid RowDefinitions="*">
+
+        <!-- FAB "+" button -->
+        <Button
+            Grid.Row="0"
+            Text="+"
+            FontSize="28"
+            TextColor="{StaticResource TextOnPrimary}"
+            Background="{StaticResource PrimaryGradientBrush}"
+            CornerRadius="32"
+            WidthRequest="64"
+            HeightRequest="64"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="0,0,20,20"
+            ZIndex="10"
+            Clicked="OnAddPlantTapped" />
+
+        <CollectionView
+            Grid.Row="0"
+            ItemsSource="{Binding Plants}"
+            SelectionMode="None"
+            Margin="16,16,16,0">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8" Margin="0,80,0,0">
+                    <Label
+                        Text="🌱"
+                        FontSize="48"
+                        HorizontalOptions="Center" />
+                    <Label
+                        Text="No plants yet."
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource TextPrimary}"
+                        HorizontalOptions="Center" />
+                    <Label
+                        Text="Tap + to add one."
+                        FontSize="14"
+                        TextColor="{StaticResource TextSecondary}"
+                        HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Plant">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem
+                                    Text="Delete"
+                                    BackgroundColor="#D32F2F"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PlantListViewModel}}, Path=DeletePlantCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Border
+                            BackgroundColor="{StaticResource SurfaceContainerLow}"
+                            StrokeThickness="0"
+                            Padding="16"
+                            StrokeShape="RoundRectangle 16">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PlantListViewModel}}, Path=OpenPlantCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="3">
+                                <Label
+                                    Grid.Row="0" Grid.Column="0"
+                                    Text="{Binding Name}"
+                                    FontSize="16"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource TextPrimary}" />
+                                <Label
+                                    Grid.Row="1" Grid.Column="0"
+                                    Text="{Binding Species}"
+                                    FontSize="13"
+                                    TextColor="{StaticResource TextSecondary}" />
+                                <Label
+                                    Grid.Row="2" Grid.Column="0"
+                                    Text="{Binding Location}"
+                                    FontSize="12"
+                                    TextColor="{StaticResource TextSecondary}" />
+                                <Label
+                                    Grid.Row="0" Grid.Column="1" Grid.RowSpan="3"
+                                    Text="{Binding NextWaterDate, StringFormat='💧 {0:d MMM}'}"
+                                    FontSize="12"
+                                    TextColor="{StaticResource Primary}"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>
