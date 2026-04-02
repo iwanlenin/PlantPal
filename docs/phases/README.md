@@ -33,9 +33,9 @@ Load only the current phase file at the start of a session — do not load all p
 | # | File | Title | Est. Time | Status |
 |---|---|---|---|---|
 | 07 | [phase-07-image-cache.md](phase-07-image-cache.md) | ImageCacheService — TDD | ~50 min | ✅ Done |
-| 08 | [phase-08-plant-detail.md](phase-08-plant-detail.md) | Plant Detail Page + Watering History | ~50 min | ⬜ Pending |
-| 09 | [phase-09-android-widget.md](phase-09-android-widget.md) | Android Home Screen Widget | ~90 min | ⬜ Pending |
-| 10 | [phase-10-settings-polish.md](phase-10-settings-polish.md) | Settings Page + Final Polish | ~30 min | ⬜ Pending |
+| 08 | [phase-08-plant-detail.md](phase-08-plant-detail.md) | Plant Detail Page + Watering History | ~50 min | ✅ Done |
+| 09 | [phase-09-android-widget.md](phase-09-android-widget.md) | Android Home Screen Widget | ~90 min | ✅ Done |
+| 10 | [phase-10-settings-polish.md](phase-10-settings-polish.md) | Settings Page + Final Polish | ~30 min | ✅ Done |
 
 ## v2.0
 
