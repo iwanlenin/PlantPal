@@ -9,7 +9,8 @@
     Shell.ForegroundColor="{StaticResource TextPrimary}"
     Shell.TabBarBackgroundColor="{StaticResource Background}"
     Shell.TabBarForegroundColor="{StaticResource Primary}"
-    Shell.TabBarUnselectedColor="{StaticResource TextSecondary}">
+    Shell.TabBarUnselectedColor="{StaticResource TextSecondary}"
+    Shell.UnselectedColor="{StaticResource TextSecondary}">
 
     <TabBar>
         <ShellContent
