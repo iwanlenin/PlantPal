@@ -19,6 +19,7 @@
 | Package | Version | Installed | Description |
 |---|---|---|---|
 | sqlite-net-pcl | 1.9.172 | Yes | SQLite ORM — model attributes and `SQLiteAsyncConnection` for DatabaseService |
+| CommunityToolkit.Mvvm | 8.4.2 | Yes | MVVM source generators for ViewModels (`ObservableObject`, `[ObservableProperty]`, `[RelayCommand]`) |
 
 ### PlantPal (main app)
 

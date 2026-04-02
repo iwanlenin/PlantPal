@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using PlantPal.Core.Interfaces;
 using PlantPal.Core.Models;
 using PlantPal.Core.Services;
+using PlantPal.Core.ViewModels;
 
 namespace PlantPal;
 
@@ -36,6 +37,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IConnectivityService, StubConnectivityService>();
         builder.Services.AddSingleton<IPlantSpeciesService, PlantSpeciesService>();
         builder.Services.AddSingleton<INavigationService, StubNavigationService>();
+        builder.Services.AddTransient<DashboardViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();
