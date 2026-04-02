@@ -54,7 +54,9 @@
       "Bash(git commit:*)",
       "Bash(./scripts/commit-phase.sh \"feat: plant detail page, watering history, image cache integration\")",
       "Bash(./scripts/new-branch.sh \"feature/phase-09-android-widget\")",
-      "Bash(./scripts/commit-phase.sh \"feat: Android home screen widget with hourly updates\")"
+      "Bash(./scripts/commit-phase.sh \"feat: Android home screen widget with hourly updates\")",
+      "Bash(./scripts/new-branch.sh \"feature/phase-10-settings-polish\")",
+      "Bash(./scripts/commit-phase.sh \"feat: settings page, tab bar, app icon, polish\")"
     ]
   }
 }

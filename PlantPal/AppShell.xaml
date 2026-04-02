@@ -6,11 +6,29 @@
     xmlns:pages="clr-namespace:PlantPal.Pages"
     Title="PlantPal"
     Shell.BackgroundColor="{StaticResource Background}"
-    Shell.ForegroundColor="{StaticResource TextPrimary}">
+    Shell.ForegroundColor="{StaticResource TextPrimary}"
+    Shell.TabBarBackgroundColor="{StaticResource Background}"
+    Shell.TabBarForegroundColor="{StaticResource Primary}"
+    Shell.TabBarUnselectedColor="{StaticResource TextSecondary}">
 
-    <ShellContent
-        Title="Dashboard"
-        ContentTemplate="{DataTemplate pages:DashboardPage}"
-        Route="Dashboard" />
+    <TabBar>
+        <ShellContent
+            Title="Dashboard"
+            Icon="&#x1F331;"
+            ContentTemplate="{DataTemplate pages:DashboardPage}"
+            Route="Dashboard" />
+
+        <ShellContent
+            Title="All Plants"
+            Icon="&#x1F4CB;"
+            ContentTemplate="{DataTemplate pages:PlantListPage}"
+            Route="PlantList" />
+
+        <ShellContent
+            Title="Settings"
+            Icon="&#x2699;"
+            ContentTemplate="{DataTemplate pages:SettingsPage}"
+            Route="Settings" />
+    </TabBar>
 
 </Shell>

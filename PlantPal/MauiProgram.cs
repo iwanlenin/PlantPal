@@ -54,11 +54,15 @@ public static class MauiProgram
         builder.Services.AddTransient<DashboardViewModel>();
         builder.Services.AddTransient<AddPlantViewModel>();
         builder.Services.AddTransient<PlantDetailViewModel>();
+        builder.Services.AddTransient<SettingsViewModel>();
+        builder.Services.AddTransient<PlantListViewModel>();
 
         // ── Pages ─────────────────────────────────────────────────────────────
         builder.Services.AddTransient<DashboardPage>();
         builder.Services.AddTransient<AddPlantPage>();
         builder.Services.AddTransient<PlantDetailPage>();
+        builder.Services.AddTransient<SettingsPage>();
+        builder.Services.AddTransient<PlantListPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

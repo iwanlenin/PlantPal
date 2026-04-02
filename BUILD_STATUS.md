@@ -12,7 +12,7 @@
 - [x] v1.0 Phase 1: ImageCacheService
 - [x] v1.0 Phase 2: Plant detail + watering history
 - [x] v1.0 Phase 3: Android widget
-- [ ] v1.0 Phase 4: Settings + polish
+- [x] v1.0 Phase 4: Settings + polish
 - [ ] v2.0 Phase 1: Weather adjustment
 - [ ] v2.0 Phase 2: Claude Plant Advisor
 - [ ] v2.0 Phase 3: Cloud sync
