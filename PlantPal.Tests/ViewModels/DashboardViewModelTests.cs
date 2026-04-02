@@ -146,6 +146,31 @@ public class DashboardViewModelTests
         Assert.False(vm.IsEmpty);
     }
 
+    [Fact]
+    public async Task OpenPlantAsync_Navigates_To_AddPlant_With_String_PlantId()
+    {
+        // Regression: Shell.GoToAsync throws InvalidCastException if plantId is int, not string.
+        var plant = CreatePlant(42, DateTime.Today);
+        var vm = this.CreateViewModel();
+
+        await vm.OpenPlantCommand.ExecuteAsync(plant);
+
+        await this.navigationService.Received(1).NavigateToAsync(
+            "AddPlant",
+            Arg.Is<Dictionary<string, object>>(d =>
+                d.ContainsKey("plantId") && d["plantId"] is string && (string)d["plantId"] == "42"));
+    }
+
+    [Fact]
+    public async Task OpenPlantAsync_NullPlant_Does_Not_Navigate()
+    {
+        var vm = this.CreateViewModel();
+
+        await vm.OpenPlantCommand.ExecuteAsync(null);
+
+        await this.navigationService.DidNotReceiveWithAnyArgs().NavigateToAsync(default!, default);
+    }
+
     // ── Negative cases ─────────────────────────────────────────────────────────
 
     [Fact]
