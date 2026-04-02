@@ -48,7 +48,9 @@
       "Bash(find ~/.nuget/packages/plugin.localnotification/14.1.0 -name *.cs)",
       "Bash(unzip -p ~/.nuget/packages/plugin.localnotification/14.1.0/plugin.localnotification.14.1.0.nupkg lib/net10.0/Plugin.LocalNotification.dll)",
       "Bash(dotnet-ildasm /tmp/pln.dll)",
-      "Bash(./scripts/commit-phase.sh \"feat: PermissionService and NotificationService with graceful degradation\")"
+      "Bash(./scripts/commit-phase.sh \"feat: PermissionService and NotificationService with graceful degradation\")",
+      "Bash(git pull:*)",
+      "Bash(./scripts/commit-phase.sh \"feat: ImageCacheService with offline fallback and TDD coverage\")"
     ]
   }
 }
