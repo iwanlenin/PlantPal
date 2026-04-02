@@ -3,7 +3,6 @@ using Plugin.LocalNotification;
 using CoreInterfaces = PlantPal.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using PlantPal.Core.Interfaces;
-using PlantPal.Core.Models;
 using PlantPal.Core.Services;
 using PlantPal.Core.ViewModels;
 using PlantPal.Pages;
@@ -35,7 +34,8 @@ public static class MauiProgram
         // Stub implementations registered here will be replaced phase by phase.
         var dbPath = Path.Combine(FileSystem.AppDataDirectory, "plantpal.db");
         builder.Services.AddSingleton<IPlantRepository>(new DatabaseService(dbPath));
-        builder.Services.AddSingleton<IWateringLogRepository, StubWateringLogRepository>();
+        builder.Services.AddSingleton<IWateringLogRepository>(
+            new WateringLogRepository(dbPath));
         builder.Services.AddSingleton<CoreInterfaces.IPermissionService, PermissionService>();
         builder.Services.AddSingleton<CoreInterfaces.INotificationScheduler, MauiNotificationScheduler>();
         builder.Services.AddSingleton<CoreInterfaces.INotificationService, NotificationService>();
@@ -53,10 +53,12 @@ public static class MauiProgram
         // ── ViewModels ────────────────────────────────────────────────────────
         builder.Services.AddTransient<DashboardViewModel>();
         builder.Services.AddTransient<AddPlantViewModel>();
+        builder.Services.AddTransient<PlantDetailViewModel>();
 
         // ── Pages ─────────────────────────────────────────────────────────────
         builder.Services.AddTransient<DashboardPage>();
         builder.Services.AddTransient<AddPlantPage>();
+        builder.Services.AddTransient<PlantDetailPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();
@@ -68,13 +70,6 @@ public static class MauiProgram
     // ── Stub implementations ───────────────────────────────────────────────────
     // These are temporary placeholders. Each will be replaced with a real
     // implementation in its dedicated phase.
-
-    private sealed class StubWateringLogRepository : IWateringLogRepository
-    {
-        public Task<List<WateringLog>> GetByPlantIdAsync(int plantId) => Task.FromResult(new List<WateringLog>());
-        public Task SaveAsync(WateringLog log) => Task.CompletedTask;
-        public Task DeleteByPlantIdAsync(int plantId) => Task.CompletedTask;
-    }
 
     /// <summary>
     /// Real navigation service using Shell. Replaces StubNavigationService.

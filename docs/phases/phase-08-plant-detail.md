@@ -1,6 +1,6 @@
 # Phase 08: Plant Detail Page + Watering History
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 **Branch:** `feature/phase-08-plant-detail`
 **Est. time:** ~50 min
 
@@ -89,4 +89,9 @@ Commit: ./scripts/commit-phase.sh "feat: plant detail page, watering history, im
 F5 on Android Emulator. Tap a plant to open detail. Tap "Water Now" and verify history appears below.
 
 ## Deviations from plan
-<!-- Fill in after completion -->
+- `WateringLogRepository` placed in `PlantPal.Core/Services/` (not `PlantPal/Services/`) — test project references Core only
+- `PlantDetailViewModel` placed in `PlantPal.Core/ViewModels/` (not `PlantPal/ViewModels/`) — same testability rationale
+- `WateringLog` model already existed in `PlantPal.Core/Models/` — not recreated
+- Cascade delete handled in `PlantDetailViewModel.DeleteAsync` (calls both repos) — `DatabaseService.DeleteAsync` unchanged
+- Log notes: skipped (confirmed by user) — WateringLog has only PlantId + WateredAt
+- `DashboardViewModel.OpenPlantAsync` updated to navigate to `"PlantDetail"` (was temporarily `"AddPlant"`)

@@ -156,7 +156,7 @@ public class DashboardViewModelTests
         await vm.OpenPlantCommand.ExecuteAsync(plant);
 
         await this.navigationService.Received(1).NavigateToAsync(
-            "AddPlant",
+            "PlantDetail",
             Arg.Is<Dictionary<string, object>>(d =>
                 d.ContainsKey("plantId") && d["plantId"] is string && (string)d["plantId"] == "42"));
     }

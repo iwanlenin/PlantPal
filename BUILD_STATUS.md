@@ -10,7 +10,7 @@
 - [x] MVP Phase 5: Dashboard UI + Add Plant form
 - [x] MVP Phase 6: PermissionService + NotificationService
 - [x] v1.0 Phase 1: ImageCacheService
-- [ ] v1.0 Phase 2: Plant detail + watering history
+- [x] v1.0 Phase 2: Plant detail + watering history
 - [ ] v1.0 Phase 3: Android widget
 - [ ] v1.0 Phase 4: Settings + polish
 - [ ] v2.0 Phase 1: Weather adjustment
