@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PlantPal.Core.ViewModels;assembly=PlantPal.Core"
+    xmlns:models="clr-namespace:PlantPal.Core.Models;assembly=PlantPal.Core"
+    x:Class="PlantPal.Pages.PlantDetailPage"
+    x:DataType="vm:PlantDetailViewModel"
+    Title="{Binding Plant.Name}"
+    BackgroundColor="{StaticResource Background}"
+    Shell.NavBarIsVisible="True">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,16" Spacing="20">
+
+            <!-- Editorial header -->
+            <VerticalStackLayout Spacing="4">
+                <Label
+                    Text="BOTANICAL ARCHIVE"
+                    FontSize="11"
+                    TextColor="{StaticResource TextSecondary}"
+                    CharacterSpacing="1.5" />
+                <Label
+                    Text="{Binding Plant.Name}"
+                    FontSize="28"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource TextPrimary}" />
+                <Label
+                    Text="{Binding Plant.Species}"
+                    FontSize="14"
+                    TextColor="{StaticResource TextSecondary}"
+                    FontAttributes="Italic" />
+            </VerticalStackLayout>
+
+            <!-- Hero image -->
+            <Border
+                BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                StrokeThickness="0"
+                HeightRequest="220"
+                StrokeShape="RoundRectangle 24">
+                <Image
+                    Source="{Binding PlantDetailImage}"
+                    Aspect="AspectFill" />
+            </Border>
+
+            <!-- Offline fallback banner -->
+            <Border
+                IsVisible="{Binding IsShowingFallbackImage}"
+                BackgroundColor="{StaticResource TertiaryContainer}"
+                StrokeThickness="0"
+                Padding="16,10"
+                StrokeShape="RoundRectangle 12">
+                <Label
+                    Text="No internet — showing placeholder image."
+                    FontSize="13"
+                    TextColor="{StaticResource Tertiary}" />
+            </Border>
+
+            <!-- Plant info card -->
+            <Border
+                BackgroundColor="{StaticResource SurfaceContainerLow}"
+                StrokeThickness="0"
+                Padding="16"
+                StrokeShape="RoundRectangle 16">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="12">
+
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="2">
+                        <Label Text="LOCATION" FontSize="10" TextColor="{StaticResource TextSecondary}" CharacterSpacing="1.2" />
+                        <Label Text="{Binding Plant.Location}" FontSize="15" TextColor="{StaticResource TextPrimary}" FontAttributes="Bold" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="2">
+                        <Label Text="WATERS EVERY" FontSize="10" TextColor="{StaticResource TextSecondary}" CharacterSpacing="1.2" />
+                        <Label FontSize="15" TextColor="{StaticResource TextPrimary}" FontAttributes="Bold">
+                            <Label.Text>
+                                <MultiBinding StringFormat="{}{0} days">
+                                    <Binding Path="Plant.WateringIntervalDays" />
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="2">
+                        <Label Text="LAST WATERED" FontSize="10" TextColor="{StaticResource TextSecondary}" CharacterSpacing="1.2" />
+                        <Label Text="{Binding Plant.LastWateredDate, StringFormat='{0:d MMM yyyy}'}" FontSize="15" TextColor="{StaticResource TextPrimary}" FontAttributes="Bold" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="2">
+                        <Label Text="NEXT WATERING" FontSize="10" TextColor="{StaticResource TextSecondary}" CharacterSpacing="1.2" />
+                        <Label Text="{Binding Plant.NextWaterDate, StringFormat='{0:d MMM yyyy}'}" FontSize="15" TextColor="{StaticResource TextPrimary}" FontAttributes="Bold" />
+                    </VerticalStackLayout>
+
+                </Grid>
+            </Border>
+
+            <!-- Water Now button -->
+            <Border
+                StrokeThickness="0"
+                HeightRequest="52"
+                StrokeShape="RoundRectangle 9999">
+                <Border.Background>
+                    <StaticResource Key="PrimaryGradientBrush" />
+                </Border.Background>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding WaterNowCommand}" />
+                </Border.GestureRecognizers>
+                <Label
+                    Text="Water Now"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource TextOnPrimary}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+            </Border>
+
+            <!-- Watering history -->
+            <VerticalStackLayout Spacing="12">
+                <Label
+                    Text="WATERING HISTORY"
+                    FontSize="11"
+                    TextColor="{StaticResource TextSecondary}"
+                    CharacterSpacing="1.5" />
+
+                <Label
+                    Text="No watering history yet."
+                    FontSize="14"
+                    TextColor="{StaticResource TextSecondary}"
+                    IsVisible="{Binding WateringHistory.Count, Converter={StaticResource IntToBoolConverter}, ConverterParameter=invert}"
+                    HorizontalOptions="Center" />
+
+                <CollectionView ItemsSource="{Binding WateringHistory}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:WateringLog">
+                            <Border
+                                BackgroundColor="{StaticResource SurfaceContainerLow}"
+                                StrokeThickness="0"
+                                Padding="16,12"
+                                Margin="0,0,0,8"
+                                StrokeShape="RoundRectangle 12">
+                                <Label
+                                    Text="{Binding WateredAt, StringFormat='{0:d MMM yyyy  •  HH:mm}'}"
+                                    FontSize="14"
+                                    TextColor="{StaticResource TextPrimary}" />
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- Edit / Delete buttons -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Border
+                    Grid.Column="0"
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    HeightRequest="48"
+                    StrokeShape="RoundRectangle 9999">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding EditCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        Text="Edit"
+                        FontSize="15"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource TextPrimary}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </Border>
+
+                <Border
+                    Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Error}"
+                    HeightRequest="48"
+                    StrokeShape="RoundRectangle 9999">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding DeleteCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        Text="Delete"
+                        FontSize="15"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Error}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </Border>
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

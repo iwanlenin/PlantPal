@@ -50,7 +50,9 @@
       "Bash(dotnet-ildasm /tmp/pln.dll)",
       "Bash(./scripts/commit-phase.sh \"feat: PermissionService and NotificationService with graceful degradation\")",
       "Bash(git pull:*)",
-      "Bash(./scripts/commit-phase.sh \"feat: ImageCacheService with offline fallback and TDD coverage\")"
+      "Bash(./scripts/commit-phase.sh \"feat: ImageCacheService with offline fallback and TDD coverage\")",
+      "Bash(git commit:*)",
+      "Bash(./scripts/commit-phase.sh \"feat: plant detail page, watering history, image cache integration\")"
     ]
   }
 }
