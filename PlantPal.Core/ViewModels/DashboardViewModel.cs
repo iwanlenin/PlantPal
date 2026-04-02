@@ -144,6 +144,6 @@ public partial class DashboardViewModel : ObservableObject
         }
 
         await this.navigationService.NavigateToAsync(
-            "PlantDetail", new Dictionary<string, object> { ["plantId"] = plant.Id });
+            "AddPlant", new Dictionary<string, object> { ["plantId"] = plant.Id });
     }
 }

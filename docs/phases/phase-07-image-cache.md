@@ -1,6 +1,6 @@
 # Phase 07: ImageCacheService — TDD
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 **Branch:** `feature/phase-07-image-cache`
 **Est. time:** ~50 min
 
@@ -93,4 +93,8 @@ Commit: ./scripts/commit-phase.sh "feat: ImageCacheService with offline fallback
 - `BUILD_STATUS.md` Phase 07 checked
 
 ## Deviations from plan
-<!-- Fill in after completion -->
+- `IHttpClientWrapper` placed in `PlantPal.Core/Interfaces/` (not `PlantPal/Interfaces/`) — test project only references Core
+- `ImageCacheService` placed in `PlantPal.Core/Services/` (not `PlantPal/Services/`) — same testability rationale; cache base path passed as constructor `string` parameter (same pattern as `DatabaseService(string dbPath)`)
+- Cache expiry: never expire (confirmed by user) — file presence on disk is the sole cache-hit check
+- `HttpClientWrapper` placed in `PlantPal/Services/` as concrete MAUI wrapper
+- `DashboardViewModel.OpenPlantAsync` navigation target corrected from non-existent `"PlantDetail"` to `"AddPlant"` (PlantDetail page is Phase 08)

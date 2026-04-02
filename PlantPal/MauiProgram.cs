@@ -39,9 +39,15 @@ public static class MauiProgram
         builder.Services.AddSingleton<CoreInterfaces.IPermissionService, PermissionService>();
         builder.Services.AddSingleton<CoreInterfaces.INotificationScheduler, MauiNotificationScheduler>();
         builder.Services.AddSingleton<CoreInterfaces.INotificationService, NotificationService>();
-        builder.Services.AddSingleton<IImageCacheService, StubImageCacheService>();
-        builder.Services.AddSingleton<IConnectivityService, StubConnectivityService>();
+        builder.Services.AddSingleton<IConnectivityService, ConnectivityService>();
+        builder.Services.AddSingleton<CoreInterfaces.IHttpClientWrapper, HttpClientWrapper>();
         builder.Services.AddSingleton<IPlantSpeciesService, PlantSpeciesService>();
+        builder.Services.AddSingleton<IImageCacheService>(sp =>
+            new ImageCacheService(
+                sp.GetRequiredService<IConnectivityService>(),
+                sp.GetRequiredService<CoreInterfaces.IHttpClientWrapper>(),
+                sp.GetRequiredService<IPlantSpeciesService>(),
+                Path.Combine(FileSystem.CacheDirectory, "plant_images")));
         builder.Services.AddSingleton<INavigationService, ShellNavigationService>();
 
         // ── ViewModels ────────────────────────────────────────────────────────
@@ -68,17 +74,6 @@ public static class MauiProgram
         public Task<List<WateringLog>> GetByPlantIdAsync(int plantId) => Task.FromResult(new List<WateringLog>());
         public Task SaveAsync(WateringLog log) => Task.CompletedTask;
         public Task DeleteByPlantIdAsync(int plantId) => Task.CompletedTask;
-    }
-
-    private sealed class StubImageCacheService : IImageCacheService
-    {
-        public Task<string> GetThumbnailPathAsync(string speciesKey) => Task.FromResult(string.Empty);
-        public Task<string> GetDetailImageAsync(string speciesKey) => Task.FromResult(string.Empty);
-    }
-
-    private sealed class StubConnectivityService : IConnectivityService
-    {
-        public bool IsConnected => false;
     }
 
     /// <summary>
