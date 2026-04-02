@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PlantPal.Core.ViewModels;assembly=PlantPal.Core"
+    xmlns:models="clr-namespace:PlantPal.Core.Models;assembly=PlantPal.Core"
+    x:Class="PlantPal.Pages.DashboardPage"
+    x:DataType="vm:DashboardViewModel"
+    Title="PlantPal"
+    BackgroundColor="{StaticResource Background}">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- FAB "+" button -->
+        <Button
+            Grid.Row="1"
+            Text="+"
+            FontSize="28"
+            TextColor="{StaticResource TextOnPrimary}"
+            Background="{StaticResource PrimaryGradientBrush}"
+            CornerRadius="32"
+            WidthRequest="64"
+            HeightRequest="64"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="0,0,20,20"
+            ZIndex="10"
+            Command="{Binding AddPlantCommand}" />
+
+        <ScrollView Grid.Row="0" Grid.RowSpan="2">
+            <VerticalStackLayout Padding="20,16" Spacing="24">
+
+                <!-- Editorial header -->
+                <VerticalStackLayout Spacing="4">
+                    <Label
+                        Text="ACTIVE CARE GUIDE"
+                        FontSize="11"
+                        TextColor="{StaticResource TextSecondary}"
+                        CharacterSpacing="1.5" />
+                    <Label
+                        Text="Today's Tasks"
+                        FontSize="28"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource TextPrimary}" />
+                </VerticalStackLayout>
+
+                <!-- Loading indicator -->
+                <ActivityIndicator
+                    IsRunning="{Binding IsLoading}"
+                    IsVisible="{Binding IsLoading}"
+                    HorizontalOptions="Center"
+                    Color="{StaticResource Primary}" />
+
+                <!-- Error state -->
+                <Border
+                    IsVisible="{Binding HasError}"
+                    BackgroundColor="{StaticResource ErrorContainer}"
+                    StrokeThickness="0"
+                    Padding="16"
+                    StrokeShape="RoundRectangle 16">
+                    <Label
+                        Text="Something went wrong loading your plants."
+                        TextColor="{StaticResource Error}" />
+                </Border>
+
+                <!-- Empty state -->
+                <VerticalStackLayout
+                    IsVisible="{Binding IsEmpty}"
+                    Spacing="12"
+                    Padding="0,40">
+                    <Label
+                        Text="NEW BEGINNINGS"
+                        FontSize="11"
+                        TextColor="{StaticResource TextSecondary}"
+                        CharacterSpacing="1.5"
+                        HorizontalOptions="Center" />
+                    <Label
+                        Text="Your collection is a blank canvas."
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource TextPrimary}"
+                        HorizontalOptions="Center" />
+                    <Button
+                        Text="Add Your First Plant"
+                        TextColor="{StaticResource TextOnPrimary}"
+                        Background="{StaticResource PrimaryGradientBrush}"
+                        CornerRadius="24"
+                        Padding="24,14"
+                        HorizontalOptions="Center"
+                        Command="{Binding AddPlantCommand}" />
+                </VerticalStackLayout>
+
+                <!-- Needs Water section -->
+                <VerticalStackLayout
+                    IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}"
+                    Spacing="12">
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label
+                            Text="Needs Care"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource TextPrimary}"
+                            VerticalOptions="Center" />
+                        <Border
+                            Grid.Column="1"
+                            BackgroundColor="{StaticResource ErrorContainer}"
+                            StrokeThickness="0"
+                            Padding="10,4"
+                            StrokeShape="RoundRectangle 9999"
+                            IsVisible="{Binding DueTodayPlants.Count, Converter={StaticResource IntToBoolConverter}}">
+                            <Label
+                                FontSize="12"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource Error}">
+                                <Label.Text>
+                                    <MultiBinding StringFormat="{}{0} PLANT{1}">
+                                        <Binding Path="DueTodayPlants.Count" />
+                                        <Binding Path="DueTodayPlants.Count" Converter="{StaticResource PluralConverter}" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                        </Border>
+                    </Grid>
+
+                    <CollectionView
+                        ItemsSource="{Binding DueTodayPlants}"
+                        SelectionMode="None">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Plant">
+                                <Border
+                                    BackgroundColor="{StaticResource SurfaceContainerLow}"
+                                    StrokeThickness="0"
+                                    Padding="16"
+                                    StrokeShape="RoundRectangle 24">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DashboardViewModel}}, Path=OpenPlantCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Grid ColumnDefinitions="60,*" ColumnSpacing="14">
+                                        <!-- Plant thumbnail -->
+                                        <Border
+                                            WidthRequest="60"
+                                            HeightRequest="60"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 16">
+                                            <Image
+                                                Source="dotnet_bot.png"
+                                                Aspect="AspectFill" />
+                                        </Border>
+
+                                        <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                            <Label
+                                                Text="{Binding Name}"
+                                                FontSize="16"
+                                                FontAttributes="Bold"
+                                                TextColor="{StaticResource TextPrimary}" />
+                                            <Label
+                                                FontSize="12"
+                                                TextColor="{StaticResource TextSecondary}">
+                                                <Label.Text>
+                                                    <MultiBinding StringFormat="{}{0} · {1}">
+                                                        <Binding Path="Species" />
+                                                        <Binding Path="Location" />
+                                                    </MultiBinding>
+                                                </Label.Text>
+                                            </Label>
+                                            <Button
+                                                Text="Mark as Watered"
+                                                FontSize="13"
+                                                TextColor="{StaticResource TextOnPrimary}"
+                                                Background="{StaticResource PrimaryGradientBrush}"
+                                                CornerRadius="9999"
+                                                Padding="16,8"
+                                                HeightRequest="36"
+                                                HorizontalOptions="Start"
+                                                Margin="0,4,0,0"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DashboardViewModel}}, Path=WaterNowCommand}"
+                                                CommandParameter="{Binding .}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <!-- Upcoming section -->
+                <VerticalStackLayout Spacing="12">
+                    <Label
+                        Text="Upcoming"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource TextPrimary}"
+                        IsVisible="{Binding UpcomingPlants.Count, Converter={StaticResource IntToBoolConverter}}" />
+
+                    <CollectionView
+                        ItemsSource="{Binding UpcomingPlants}"
+                        SelectionMode="None">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Plant">
+                                <Border
+                                    BackgroundColor="{StaticResource SurfaceContainerLow}"
+                                    StrokeThickness="0"
+                                    Padding="12,10"
+                                    StrokeShape="RoundRectangle 16">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DashboardViewModel}}, Path=OpenPlantCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Grid ColumnDefinitions="40,*,Auto" ColumnSpacing="12">
+                                        <Border
+                                            WidthRequest="40"
+                                            HeightRequest="40"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 20">
+                                            <Image
+                                                Source="dotnet_bot.png"
+                                                Aspect="AspectFill" />
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                            <Label
+                                                Text="{Binding Name}"
+                                                FontSize="14"
+                                                FontAttributes="Bold"
+                                                TextColor="{StaticResource TextPrimary}" />
+                                            <Label
+                                                Text="{Binding Species}"
+                                                FontSize="12"
+                                                TextColor="{StaticResource TextSecondary}" />
+                                        </VerticalStackLayout>
+                                        <Border
+                                            Grid.Column="2"
+                                            BackgroundColor="{StaticResource TertiaryContainer}"
+                                            StrokeThickness="0"
+                                            Padding="10,4"
+                                            StrokeShape="RoundRectangle 9999"
+                                            VerticalOptions="Center">
+                                            <Label
+                                                Text="{Binding NextWaterDate, StringFormat='{0:MMM dd}'}"
+                                                FontSize="12"
+                                                FontAttributes="Bold"
+                                                TextColor="{StaticResource Tertiary}" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -7,7 +7,7 @@
 - [x] MVP Phase 2: PlantSpeciesService (TDD)
 - [x] MVP Phase 3: DatabaseService (TDD)
 - [x] MVP Phase 4: DashboardViewModel (TDD)
-- [ ] MVP Phase 5: Dashboard UI + Add Plant form
+- [x] MVP Phase 5: Dashboard UI + Add Plant form
 - [ ] MVP Phase 6: PermissionService + NotificationService
 - [ ] v1.0 Phase 1: ImageCacheService
 - [ ] v1.0 Phase 2: Plant detail + watering history

@@ -1,9 +1,15 @@
-﻿namespace PlantPal;
+using PlantPal.Pages;
 
+namespace PlantPal;
+
+/// <summary>
+/// Application Shell — registers navigation routes.
+/// </summary>
 public partial class AppShell : Shell
 {
-	public AppShell()
-	{
-		InitializeComponent();
-	}
+    public AppShell()
+    {
+        this.InitializeComponent();
+        Routing.RegisterRoute("AddPlant", typeof(AddPlantPage));
+    }
 }

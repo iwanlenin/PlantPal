@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PlantPal.Core.ViewModels;assembly=PlantPal.Core"
+    xmlns:models="clr-namespace:PlantPal.Core.Models;assembly=PlantPal.Core"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+    x:Class="PlantPal.Pages.AddPlantPage"
+    x:DataType="vm:AddPlantViewModel"
+    Title="{Binding IsEditMode, Converter={StaticResource EditModeTitleConverter}}"
+    BackgroundColor="{StaticResource Background}"
+    Shell.NavBarIsVisible="True">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,16" Spacing="20">
+
+            <!-- Editorial header -->
+            <VerticalStackLayout Spacing="4">
+                <Label
+                    Text="BOTANICAL ARCHIVE"
+                    FontSize="11"
+                    TextColor="{StaticResource TextSecondary}"
+                    CharacterSpacing="1.5" />
+                <Label
+                    Text="Document your&#10;latest addition."
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource TextPrimary}" />
+            </VerticalStackLayout>
+
+            <!-- Photo area -->
+            <Border
+                BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                StrokeThickness="0"
+                HeightRequest="140"
+                StrokeShape="RoundRectangle 24">
+                <Grid>
+                    <Image
+                        Source="{Binding PhotoPath}"
+                        Aspect="AspectFill"
+                        IsVisible="{Binding PhotoPath, Converter={StaticResource StringToBoolConverter}}" />
+                    <VerticalStackLayout
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        Spacing="4"
+                        IsVisible="{Binding PhotoPath, Converter={StaticResource InvertedStringToBoolConverter}}">
+                        <Label
+                            Text="Add a botanical portrait"
+                            FontSize="14"
+                            TextColor="{StaticResource TextSecondary}"
+                            HorizontalOptions="Center" />
+                        <Label
+                            Text="Capture the likeness of your plant."
+                            FontSize="12"
+                            TextColor="{StaticResource TextSecondary}"
+                            HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- Plant Name -->
+            <VerticalStackLayout Spacing="6">
+                <Label
+                    Text="PLANT NICKNAME"
+                    FontSize="11"
+                    TextColor="{StaticResource TextSecondary}"
+                    CharacterSpacing="1.5" />
+                <Border
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    Padding="16,0"
+                    StrokeShape="RoundRectangle 16">
+                    <Entry
+                        Text="{Binding Name}"
+                        Placeholder="e.g. Monty"
+                        PlaceholderColor="{StaticResource TextSecondary}"
+                        TextColor="{StaticResource TextPrimary}"
+                        FontSize="16"
+                        BackgroundColor="Transparent" />
+                </Border>
+                <Label
+                    Text="{Binding NameError}"
+                    TextColor="{StaticResource Error}"
+                    FontSize="12"
+                    IsVisible="{Binding NameError, Converter={StaticResource StringToBoolConverter}}" />
+            </VerticalStackLayout>
+
+            <!-- Location -->
+            <VerticalStackLayout Spacing="6">
+                <Label
+                    Text="LOCATION"
+                    FontSize="11"
+                    TextColor="{StaticResource TextSecondary}"
+                    CharacterSpacing="1.5" />
+                <Border
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    Padding="16,0"
+                    StrokeShape="RoundRectangle 16">
+                    <Picker
+                        Title="Select location"
+                        SelectedItem="{Binding Location}"
+                        TextColor="{StaticResource TextPrimary}"
+                        TitleColor="{StaticResource TextSecondary}"
+                        BackgroundColor="Transparent">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Living Room</x:String>
+                                <x:String>Bedroom</x:String>
+                                <x:String>Kitchen</x:String>
+                                <x:String>Bathroom</x:String>
+                                <x:String>Balcony</x:String>
+                                <x:String>Garden</x:String>
+                                <x:String>Other</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Plant Species search -->
+            <VerticalStackLayout Spacing="6">
+                <Label
+                    Text="PLANT SPECIES"
+                    FontSize="11"
+                    TextColor="{StaticResource TextSecondary}"
+                    CharacterSpacing="1.5" />
+                <Border
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    Padding="16,0"
+                    StrokeShape="RoundRectangle 16">
+                    <SearchBar
+                        Text="{Binding SearchText}"
+                        Placeholder="Search for a species..."
+                        PlaceholderColor="{StaticResource TextSecondary}"
+                        TextColor="{StaticResource TextPrimary}"
+                        BackgroundColor="Transparent"
+                        CancelButtonColor="{StaticResource Primary}" />
+                </Border>
+                <CollectionView
+                    ItemsSource="{Binding FilteredSpecies}"
+                    SelectedItem="{Binding SelectedSpecies}"
+                    SelectionMode="Single"
+                    HeightRequest="160"
+                    IsVisible="{Binding SearchText, Converter={StaticResource StringToBoolConverter}}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="4" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:PlantSpecies">
+                            <Border
+                                BackgroundColor="{StaticResource SurfaceContainerLow}"
+                                StrokeThickness="0"
+                                Padding="12,8"
+                                StrokeShape="RoundRectangle 12">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label
+                                        Text="{Binding CommonName}"
+                                        FontSize="14"
+                                        TextColor="{StaticResource TextPrimary}"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Column="1"
+                                        FontSize="12"
+                                        TextColor="{StaticResource Tertiary}"
+                                        VerticalOptions="Center"
+                                        Text="{Binding LatinName}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Suggestion chip -->
+                <Border
+                    BackgroundColor="{StaticResource TertiaryContainer}"
+                    StrokeThickness="0"
+                    Padding="12,6"
+                    StrokeShape="RoundRectangle 9999"
+                    HorizontalOptions="Start"
+                    IsVisible="{Binding SelectedSpecies, Converter={StaticResource ObjectToBoolConverter}}">
+                    <Label
+                        FontSize="13"
+                        TextColor="{StaticResource Tertiary}"
+                        Text="{Binding WateringIntervalDays, StringFormat='Suggested every {0} days'}" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Watering Interval -->
+            <VerticalStackLayout Spacing="6">
+                <Label
+                    Text="WATERING SCHEDULE"
+                    FontSize="11"
+                    TextColor="{StaticResource TextSecondary}"
+                    CharacterSpacing="1.5" />
+                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
+                    <Label
+                        Text="{Binding WateringIntervalDays, StringFormat='Every {0} days'}"
+                        FontSize="16"
+                        TextColor="{StaticResource TextPrimary}"
+                        VerticalOptions="Center" />
+                    <Stepper
+                        Grid.Column="1"
+                        Minimum="1"
+                        Maximum="90"
+                        Increment="1"
+                        Value="{Binding WateringIntervalDays}" />
+                </Grid>
+            </VerticalStackLayout>
+
+            <!-- Last Watered Date -->
+            <VerticalStackLayout Spacing="6">
+                <Label
+                    Text="LAST WATERED"
+                    FontSize="11"
+                    TextColor="{StaticResource TextSecondary}"
+                    CharacterSpacing="1.5" />
+                <Border
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    Padding="16,0"
+                    StrokeShape="RoundRectangle 16">
+                    <DatePicker
+                        Date="{Binding LastWateredDate}"
+                        MaximumDate="{x:Static sys:DateTime.Today}"
+                        TextColor="{StaticResource TextPrimary}"
+                        BackgroundColor="Transparent" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Save button -->
+            <Button
+                Text="Save to Collection"
+                TextColor="{StaticResource TextOnPrimary}"
+                Background="{StaticResource PrimaryGradientBrush}"
+                CornerRadius="24"
+                Padding="0,16"
+                FontSize="16"
+                FontAttributes="Bold"
+                Command="{Binding SaveCommand}"
+                IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}" />
+
+            <!-- Delete button (edit mode only) -->
+            <Button
+                Text="Delete Plant"
+                TextColor="{StaticResource Error}"
+                BackgroundColor="Transparent"
+                FontSize="14"
+                Command="{Binding DeleteCommand}"
+                IsVisible="{Binding IsEditMode}"
+                HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -3,12 +3,14 @@
     x:Class="PlantPal.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:PlantPal"
-    Title="PlantPal">
+    xmlns:pages="clr-namespace:PlantPal.Pages"
+    Title="PlantPal"
+    Shell.BackgroundColor="{StaticResource Background}"
+    Shell.ForegroundColor="{StaticResource TextPrimary}">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Dashboard"
+        ContentTemplate="{DataTemplate pages:DashboardPage}"
+        Route="Dashboard" />
 
 </Shell>

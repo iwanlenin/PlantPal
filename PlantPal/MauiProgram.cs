@@ -4,6 +4,7 @@ using PlantPal.Core.Interfaces;
 using PlantPal.Core.Models;
 using PlantPal.Core.Services;
 using PlantPal.Core.ViewModels;
+using PlantPal.Pages;
 
 namespace PlantPal;
 
@@ -36,8 +37,15 @@ public static class MauiProgram
         builder.Services.AddSingleton<IImageCacheService, StubImageCacheService>();
         builder.Services.AddSingleton<IConnectivityService, StubConnectivityService>();
         builder.Services.AddSingleton<IPlantSpeciesService, PlantSpeciesService>();
-        builder.Services.AddSingleton<INavigationService, StubNavigationService>();
+        builder.Services.AddSingleton<INavigationService, ShellNavigationService>();
+
+        // ── ViewModels ────────────────────────────────────────────────────────
         builder.Services.AddTransient<DashboardViewModel>();
+        builder.Services.AddTransient<AddPlantViewModel>();
+
+        // ── Pages ─────────────────────────────────────────────────────────────
+        builder.Services.AddTransient<DashboardPage>();
+        builder.Services.AddTransient<AddPlantPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();
@@ -84,9 +92,24 @@ public static class MauiProgram
         public bool IsConnected => false;
     }
 
-private sealed class StubNavigationService : INavigationService
+    /// <summary>
+    /// Real navigation service using Shell. Replaces StubNavigationService.
+    /// </summary>
+    private sealed class ShellNavigationService : INavigationService
     {
-        public Task NavigateToAsync(string route, Dictionary<string, object>? parameters = null) => Task.CompletedTask;
-        public Task GoBackAsync() => Task.CompletedTask;
+        public async Task NavigateToAsync(string route, Dictionary<string, object>? parameters = null)
+        {
+            if (parameters is not null)
+            {
+                await Shell.Current.GoToAsync(route, parameters);
+            }
+            else
+            {
+                await Shell.Current.GoToAsync(route);
+            }
+        }
+
+        public async Task GoBackAsync() =>
+            await Shell.Current.GoToAsync("..");
     }
 }
