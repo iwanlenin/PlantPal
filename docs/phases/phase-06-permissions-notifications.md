@@ -1,6 +1,6 @@
 # Phase 06: PermissionService + NotificationService — TDD
 
-**Status:** ⬜ Pending
+**Status:** ✅ Complete
 **Branch:** `feature/phase-06-permissions-notifications`
 **Est. time:** ~40 min
 
@@ -16,11 +16,15 @@ Platform permissions are one of the trickiest parts of mobile development. The k
 1. When notifications are denied: show the "enable notifications" banner immediately on dashboard load, or only after the user first tries to save a plant?
 
 ## Files to create/modify
+- `PlantPal.Core/Interfaces/INotificationScheduler.cs` (new — abstracts Plugin.LocalNotification for testability)
+- `PlantPal.Core/Services/NotificationService.cs` (moved to Core, not MAUI — uses INotificationScheduler)
 - `PlantPal/Services/PermissionService.cs`
-- `PlantPal/Services/NotificationService.cs`
+- `PlantPal/Services/MauiNotificationScheduler.cs` (new — concrete Plugin.LocalNotification wrapper)
 - `PlantPal.Tests/Services/NotificationServiceTests.cs`
-- `PlantPal.Tests/Services/PermissionServiceTests.cs`
 - `PlantPal/Platforms/Android/MainApplication.cs`
+- `PlantPal/Pages/DashboardPage.xaml` (amber notification banner)
+- `PlantPal/Pages/DashboardPage.xaml.cs` (Settings tap handler)
+- `PlantPal.Core/ViewModels/DashboardViewModel.cs` (permission check on load)
 
 ## Prior state
 The following already exist — do not recreate:
@@ -107,4 +111,9 @@ Commit: ./scripts/commit-phase.sh "feat: PermissionService and NotificationServi
 F5 on Android Emulator. Deny notification permission when prompted. Confirm amber banner appears on dashboard. App should remain fully functional.
 
 ## Deviations from plan
-<!-- Fill in after completion -->
+- `NotificationService` placed in `PlantPal.Core/Services/` (not `PlantPal/Services/`) — requires `INotificationScheduler` abstraction so unit tests don't depend on MAUI
+- Added `INotificationScheduler` interface to Core — thin wrapper around `Plugin.LocalNotification` so scheduling can be mocked in tests
+- Added `MauiNotificationScheduler` in `PlantPal/Services/` — concrete implementation using `Plugin.LocalNotification` v14 API (namespace: `Plugin.LocalNotification.Core.Models`)
+- `PermissionServiceTests.cs` not created — `PermissionService` wraps MAUI `Permissions` API directly; no testable logic independent of platform
+- Banner decision: show on every dashboard load (confirmed by user)
+- Plugin namespace: `Plugin.LocalNotification.Core.Models` and `Plugin.LocalNotification.Core.Models.AndroidOption` (not `Plugin.LocalNotification.AndroidOption` as assumed)

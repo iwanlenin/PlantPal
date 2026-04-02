@@ -20,9 +20,17 @@ public partial class DashboardPage : ContentPage
     }
 
     /// <inheritdoc />
+    /// <inheritdoc />
     protected override async void OnAppearing()
     {
         base.OnAppearing();
         await this.viewModel.LoadPlantsCommand.ExecuteAsync(null);
     }
+
+    /// <summary>
+    /// Opens device Settings so the user can grant notification permission manually.
+    /// Called when the user taps the notification permission banner.
+    /// </summary>
+    private void OnNotificationBannerTapped(object? sender, TappedEventArgs e) =>
+        AppInfo.ShowSettingsUI();
 }
