@@ -1,10 +1,13 @@
 using CommunityToolkit.Maui;
+using Plugin.LocalNotification;
+using CoreInterfaces = PlantPal.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using PlantPal.Core.Interfaces;
 using PlantPal.Core.Models;
 using PlantPal.Core.Services;
 using PlantPal.Core.ViewModels;
 using PlantPal.Pages;
+using PlantPal.Services;
 
 namespace PlantPal;
 
@@ -21,6 +24,7 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
+            .UseLocalNotification()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -32,8 +36,9 @@ public static class MauiProgram
         var dbPath = Path.Combine(FileSystem.AppDataDirectory, "plantpal.db");
         builder.Services.AddSingleton<IPlantRepository>(new DatabaseService(dbPath));
         builder.Services.AddSingleton<IWateringLogRepository, StubWateringLogRepository>();
-        builder.Services.AddSingleton<INotificationService, StubNotificationService>();
-        builder.Services.AddSingleton<IPermissionService, StubPermissionService>();
+        builder.Services.AddSingleton<CoreInterfaces.IPermissionService, PermissionService>();
+        builder.Services.AddSingleton<CoreInterfaces.INotificationScheduler, MauiNotificationScheduler>();
+        builder.Services.AddSingleton<CoreInterfaces.INotificationService, NotificationService>();
         builder.Services.AddSingleton<IImageCacheService, StubImageCacheService>();
         builder.Services.AddSingleton<IConnectivityService, StubConnectivityService>();
         builder.Services.AddSingleton<IPlantSpeciesService, PlantSpeciesService>();
@@ -63,22 +68,6 @@ public static class MauiProgram
         public Task<List<WateringLog>> GetByPlantIdAsync(int plantId) => Task.FromResult(new List<WateringLog>());
         public Task SaveAsync(WateringLog log) => Task.CompletedTask;
         public Task DeleteByPlantIdAsync(int plantId) => Task.CompletedTask;
-    }
-
-    private sealed class StubNotificationService : INotificationService
-    {
-        public bool AreNotificationsEnabled => false;
-        public Task ScheduleReminderAsync(Plant plant) => Task.CompletedTask;
-        public Task CancelReminderAsync(int plantId) => Task.CompletedTask;
-        public Task RescheduleAllAsync(List<Plant> plants) => Task.CompletedTask;
-    }
-
-    private sealed class StubPermissionService : IPermissionService
-    {
-        public Task<PermissionResult> CheckNotificationPermissionAsync() => Task.FromResult(PermissionResult.Denied);
-        public Task<PermissionResult> RequestNotificationPermissionAsync() => Task.FromResult(PermissionResult.Denied);
-        public Task<PermissionResult> CheckPhotoPermissionAsync() => Task.FromResult(PermissionResult.Denied);
-        public Task<PermissionResult> RequestPhotoPermissionAsync() => Task.FromResult(PermissionResult.Denied);
     }
 
     private sealed class StubImageCacheService : IImageCacheService

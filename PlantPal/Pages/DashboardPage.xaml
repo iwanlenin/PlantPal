@@ -44,6 +44,37 @@
                         TextColor="{StaticResource TextPrimary}" />
                 </VerticalStackLayout>
 
+                <!-- Notification permission banner -->
+                <Border
+                    IsVisible="{Binding ShowNotificationBanner}"
+                    BackgroundColor="{StaticResource TertiaryContainer}"
+                    StrokeThickness="0"
+                    Padding="16,12"
+                    StrokeShape="RoundRectangle 16">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnNotificationBannerTapped" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label
+                                Text="Enable notifications"
+                                FontSize="14"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource Tertiary}" />
+                            <Label
+                                Text="Tap to get watering reminders in Settings."
+                                FontSize="12"
+                                TextColor="{StaticResource Tertiary}" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="1"
+                            Text="›"
+                            FontSize="20"
+                            TextColor="{StaticResource Tertiary}"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
                 <!-- Loading indicator -->
                 <ActivityIndicator
                     IsRunning="{Binding IsLoading}"

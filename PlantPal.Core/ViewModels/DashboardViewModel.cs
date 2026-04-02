@@ -73,6 +73,9 @@ public partial class DashboardViewModel : ObservableObject
 
         try
         {
+            var permission = await this.permissionService.CheckNotificationPermissionAsync();
+            this.ShowNotificationBanner = permission != PermissionResult.Granted;
+
             var plants = await this.repository.GetAllAsync();
             var today = DateTime.Today;
             var windowEnd = today.AddDays(7);
