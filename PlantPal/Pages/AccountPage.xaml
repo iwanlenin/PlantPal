@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PlantPal.Core.ViewModels;assembly=PlantPal.Core"
+    x:Class="PlantPal.Pages.AccountPage"
+    x:DataType="vm:AccountViewModel"
+    Title="Account"
+    BackgroundColor="{StaticResource Background}"
+    Shell.NavBarIsVisible="True">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,16" Spacing="20">
+
+            <!-- Editorial header -->
+            <VerticalStackLayout Spacing="4">
+                <Label
+                    Text="CLOUD SYNC"
+                    FontSize="11"
+                    TextColor="{StaticResource TextSecondary}"
+                    CharacterSpacing="1.5" />
+                <Label
+                    Text="Your Account"
+                    FontSize="28"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource TextPrimary}" />
+            </VerticalStackLayout>
+
+            <!-- ── SIGNED IN STATE ── -->
+            <VerticalStackLayout IsVisible="{Binding IsSignedIn}" Spacing="16">
+
+                <!-- User info card -->
+                <Border
+                    BackgroundColor="{StaticResource SurfaceContainerLow}"
+                    StrokeThickness="0"
+                    Padding="16"
+                    StrokeShape="RoundRectangle 16">
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="4">
+                        <Label
+                            Grid.Row="0" Grid.Column="0"
+                            Text="SIGNED IN AS"
+                            FontSize="10"
+                            TextColor="{StaticResource TextSecondary}"
+                            CharacterSpacing="1.2" />
+                        <Label
+                            Grid.Row="1" Grid.Column="0"
+                            Text="{Binding UserEmail}"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource TextPrimary}" />
+
+                        <!-- Sync status badge -->
+                        <Border
+                            Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                            BackgroundColor="{StaticResource TertiaryContainer}"
+                            StrokeThickness="0"
+                            Padding="10,6"
+                            StrokeShape="RoundRectangle 9999"
+                            IsVisible="{Binding IsSyncing}">
+                            <Label
+                                Text="Syncing…"
+                                FontSize="12"
+                                TextColor="{StaticResource Tertiary}" />
+                        </Border>
+
+                        <Border
+                            Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                            BackgroundColor="{StaticResource ErrorContainer}"
+                            StrokeThickness="0"
+                            Padding="10,6"
+                            StrokeShape="RoundRectangle 9999"
+                            IsVisible="{Binding HasSyncError}">
+                            <Label
+                                Text="Sync error"
+                                FontSize="12"
+                                TextColor="{StaticResource Error}" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Last synced + offline notice -->
+                <Label
+                    Text="{Binding LastSyncedText}"
+                    FontSize="13"
+                    TextColor="{StaticResource TextSecondary}"
+                    HorizontalOptions="Center" />
+
+                <!-- Offline banner -->
+                <Border
+                    IsVisible="{Binding IsOffline}"
+                    BackgroundColor="{StaticResource TertiaryContainer}"
+                    StrokeThickness="0"
+                    Padding="16,12"
+                    StrokeShape="RoundRectangle 12">
+                    <Label
+                        Text="Your plants are safe — changes will sync when you're back online."
+                        FontSize="13"
+                        TextColor="{StaticResource Tertiary}" />
+                </Border>
+
+                <!-- Manual sync button -->
+                <Border
+                    StrokeThickness="0"
+                    HeightRequest="52"
+                    StrokeShape="RoundRectangle 9999"
+                    IsEnabled="{Binding IsSyncing, Converter={StaticResource InvertedBoolConverter}}">
+                    <Border.Background>
+                        <StaticResource Key="PrimaryGradientBrush" />
+                    </Border.Background>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ManualSyncCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        Text="Sync Now"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource TextOnPrimary}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </Border>
+
+                <!-- Sign out button -->
+                <Border
+                    BackgroundColor="Transparent"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Error}"
+                    HeightRequest="48"
+                    StrokeShape="RoundRectangle 9999">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SignOutCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        Text="Sign Out"
+                        FontSize="15"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Error}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </Border>
+
+            </VerticalStackLayout>
+
+            <!-- ── SIGNED OUT STATE ── -->
+            <VerticalStackLayout IsVisible="{Binding IsSignedOut}" Spacing="16">
+
+                <Label
+                    Text="Sign in to sync your plants across devices."
+                    FontSize="15"
+                    TextColor="{StaticResource TextSecondary}"
+                    HorizontalTextAlignment="Center" />
+
+                <!-- Email field -->
+                <Border
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    Padding="16,4"
+                    StrokeShape="RoundRectangle 16">
+                    <Entry
+                        Placeholder="Email"
+                        Text="{Binding EmailInput}"
+                        Keyboard="Email"
+                        FontSize="15"
+                        TextColor="{StaticResource TextPrimary}"
+                        PlaceholderColor="{StaticResource TextSecondary}"
+                        BackgroundColor="Transparent" />
+                </Border>
+
+                <!-- Password field -->
+                <Border
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    Padding="16,4"
+                    StrokeShape="RoundRectangle 16">
+                    <Entry
+                        Placeholder="Password"
+                        Text="{Binding PasswordInput}"
+                        IsPassword="True"
+                        FontSize="15"
+                        TextColor="{StaticResource TextPrimary}"
+                        PlaceholderColor="{StaticResource TextSecondary}"
+                        BackgroundColor="Transparent" />
+                </Border>
+
+                <!-- Error message -->
+                <Label
+                    Text="{Binding SignInError}"
+                    FontSize="13"
+                    TextColor="{StaticResource Error}"
+                    IsVisible="{Binding SignInError, Converter={StaticResource StringToBoolConverter}}"
+                    HorizontalTextAlignment="Center" />
+
+                <!-- Sign In button -->
+                <Border
+                    StrokeThickness="0"
+                    HeightRequest="52"
+                    StrokeShape="RoundRectangle 9999">
+                    <Border.Background>
+                        <StaticResource Key="PrimaryGradientBrush" />
+                    </Border.Background>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SignInCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        Text="Sign In"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource TextOnPrimary}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </Border>
+
+                <!-- Sign Up button -->
+                <Border
+                    BackgroundColor="Transparent"
+                    StrokeThickness="1"
+                    Stroke="{StaticResource Primary}"
+                    HeightRequest="48"
+                    StrokeShape="RoundRectangle 9999">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SignUpCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        Text="Create Account"
+                        FontSize="15"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Primary}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </Border>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

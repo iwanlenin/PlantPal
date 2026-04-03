@@ -57,6 +57,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<CoreInterfaces.ISecureStorageService, SecureStorageService>();
         builder.Services.AddSingleton<IAdvisorMessageRepository>(new AdvisorMessageRepository(dbPath));
         builder.Services.AddSingleton<CoreInterfaces.IPlantAdvisorService, PlantAdvisorService>();
+        builder.Services.AddSingleton<CoreInterfaces.ISupabaseClient, SupabaseClientService>();
+        builder.Services.AddSingleton<CoreInterfaces.ISyncService, SyncService>();
 
         // ── ViewModels ────────────────────────────────────────────────────────
         builder.Services.AddTransient<DashboardViewModel>();
@@ -65,6 +67,7 @@ public static class MauiProgram
         builder.Services.AddTransient<SettingsViewModel>();
         builder.Services.AddTransient<PlantListViewModel>();
         builder.Services.AddTransient<PlantAdvisorViewModel>();
+        builder.Services.AddTransient<AccountViewModel>();
 
         // ── Pages ─────────────────────────────────────────────────────────────
         builder.Services.AddTransient<DashboardPage>();
@@ -73,6 +76,7 @@ public static class MauiProgram
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<PlantListPage>();
         builder.Services.AddTransient<PlantAdvisorPage>();
+        builder.Services.AddTransient<AccountPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

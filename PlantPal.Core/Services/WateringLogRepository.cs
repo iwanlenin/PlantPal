@@ -24,6 +24,13 @@ public class WateringLogRepository : IWateringLogRepository
     }
 
     /// <inheritdoc />
+    public async Task<List<WateringLog>> GetAllAsync()
+    {
+        await this.InitAsync();
+        return await this.connection.Table<WateringLog>().ToListAsync();
+    }
+
+    /// <inheritdoc />
     public async Task<List<WateringLog>> GetByPlantIdAsync(int plantId)
     {
         await this.InitAsync();
@@ -37,6 +44,13 @@ public class WateringLogRepository : IWateringLogRepository
     public async Task SaveAsync(WateringLog log)
     {
         await this.InitAsync();
+
+        if (string.IsNullOrEmpty(log.SyncId))
+        {
+            log.SyncId = Guid.NewGuid().ToString();
+        }
+
+        log.UpdatedAt = DateTime.UtcNow;
         await this.connection.InsertAsync(log);
     }
 

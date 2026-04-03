@@ -46,6 +46,13 @@ public class DatabaseService : IPlantRepository
         }
 
         await this.InitAsync();
+
+        if (string.IsNullOrEmpty(plant.SyncId))
+        {
+            plant.SyncId = Guid.NewGuid().ToString();
+        }
+
+        plant.UpdatedAt = DateTime.UtcNow;
         plant.RecalculateNextWaterDate();
 
         if (plant.Id != 0)
