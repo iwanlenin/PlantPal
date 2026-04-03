@@ -7,6 +7,9 @@ namespace PlantPal.Core.Interfaces;
 /// </summary>
 public interface IWateringLogRepository
 {
+    /// <summary>Returns all watering logs across all plants.</summary>
+    Task<List<WateringLog>> GetAllAsync();
+
     /// <summary>Returns all watering logs for the specified plant, newest first.</summary>
     /// <param name="plantId">The primary key of the plant whose logs to retrieve.</param>
     Task<List<WateringLog>> GetByPlantIdAsync(int plantId);

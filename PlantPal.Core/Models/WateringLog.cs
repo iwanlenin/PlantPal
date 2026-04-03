@@ -15,4 +15,16 @@ public class WateringLog
 
     /// <summary>Gets or sets the date and time when the plant was watered.</summary>
     public DateTime WateredAt { get; set; }
+
+    /// <summary>
+    /// Gets or sets the stable cross-device identifier (UUID string).
+    /// Generated on first save; used to reconcile records during cloud sync.
+    /// </summary>
+    public string SyncId { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the UTC timestamp of the last modification.
+    /// Used for last-write-wins conflict resolution during sync.
+    /// </summary>
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

@@ -30,6 +30,12 @@
             Icon="&#x2699;"
             ContentTemplate="{DataTemplate pages:SettingsPage}"
             Route="Settings" />
+
+        <ShellContent
+            Title="Account"
+            Icon="&#x1F464;"
+            ContentTemplate="{DataTemplate pages:AccountPage}"
+            Route="Account" />
     </TabBar>
 
 </Shell>

@@ -15,4 +15,4 @@
 - [x] v1.0 Phase 4: Settings + polish
 - [x] v2.0 Phase 1: Weather adjustment
 - [x] v2.0 Phase 2: Claude Plant Advisor
-- [ ] v2.0 Phase 3: Cloud sync
+- [x] v2.0 Phase 3: Cloud sync

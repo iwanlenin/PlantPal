@@ -39,6 +39,18 @@ public class Plant
     public bool IsWeatherAdjusted { get; set; }
 
     /// <summary>
+    /// Gets or sets the stable cross-device identifier (UUID string).
+    /// Generated on first save; used to reconcile records during cloud sync.
+    /// </summary>
+    public string SyncId { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the UTC timestamp of the last modification.
+    /// Used for last-write-wins conflict resolution during sync.
+    /// </summary>
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    /// <summary>
     /// Recalculates <see cref="NextWaterDate"/> based on <see cref="LastWateredDate"/>
     /// and <see cref="WateringIntervalDays"/>. Has no effect if <see cref="LastWateredDate"/> is null.
     /// </summary>
