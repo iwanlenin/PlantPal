@@ -1,8 +1,8 @@
 # PlantPal — Claude Code Project Context
 
 ## Memory
-See [.claude/MEMORY.md](./.claude/MEMORY.md) for the index of all remembered rules, feedback, and project context.
-Read it at the start of every session. Update it whenever a new rule or preference is established.
+See [.claude/MEMORY.md](./.claude/MEMORY.md) for project state and user context (changes over time).
+Read it at the start of every session. Update it when project state changes. Feedback rules live permanently below in the **Rules** section — do not re-save them to memory files.
 
 ## Package & environment reference
 See [PACKAGES.md](./PACKAGES.md) for all NuGet packages, versions, and dev environment details.
@@ -20,6 +20,16 @@ See [docs/design/](./docs/design/) for UI design assets:
 - `mockups/` — screen PNGs + HTML source per screen (mvp-dashboard-tasks, mvp-dashboard-planner, mvp-add-plant)
 
 Read the mockup PNGs and design-system.md before building any UI in Phase 05+.
+
+---
+
+## Rules — always follow these
+
+- **Explain every command before running it** — Before any Bash call, explain in plain English what it does, what it changes, and why it is needed at this point. No silent commands.
+- **Fix root cause, no workarounds** — When something fails, identify and fix the actual issue. Do not try alternative approaches to bypass it.
+- **Best practices first** — Before writing code, config, or scripts, consider what the community/official docs recommend. Apply the best known approach, not just the first working one.
+- **Fix all 3 platforms** — The app targets Android, iOS, and Windows. If something is missing or broken on any platform, investigate and fix it. Do not explain it away as a rendering difference.
+- **Phase completion** — A phase is only done when: (1) code is committed, (2) PR is created and merged to main, (3) local main is fetched and up-to-date, (4) no open PRs or branches remain.
 
 ---
 
