@@ -20,10 +20,10 @@ public partial class DashboardPage : ContentPage
     }
 
     /// <inheritdoc />
-    /// <inheritdoc />
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        this.viewModel.IsWeatherAwareEnabled = Preferences.Get("weather_watering", false);
         await this.viewModel.LoadPlantsCommand.ExecuteAsync(null);
     }
 

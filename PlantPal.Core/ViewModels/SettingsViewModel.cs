@@ -27,6 +27,12 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     private TimeSpan reminderTime = new TimeSpan(9, 0, 0);
 
+    /// <summary>
+    /// Whether weather-aware watering is enabled. The page code-behind persists this to Preferences.
+    /// </summary>
+    [ObservableProperty]
+    private bool isWeatherAwareEnabled;
+
     /// <summary>Initialises a new instance of <see cref="SettingsViewModel"/>.</summary>
     public SettingsViewModel(IPermissionService permissionService)
     {
