@@ -42,6 +42,14 @@ public partial class DashboardViewModel : ObservableObject
     private bool showNotificationBanner;
 
     /// <summary>
+    /// True when weather-aware watering is enabled. Set by the page code-behind from Preferences
+    /// before <see cref="LoadPlantsCommand"/> executes. Outdoor plants are marked
+    /// <see cref="Plant.IsWeatherAdjusted"/> accordingly in <see cref="LoadPlantsAsync"/>.
+    /// </summary>
+    [ObservableProperty]
+    private bool isWeatherAwareEnabled;
+
+    /// <summary>
     /// Initialises a new instance of <see cref="DashboardViewModel"/>.
     /// </summary>
     /// <param name="repository">The plant data repository.</param>
@@ -79,6 +87,16 @@ public partial class DashboardViewModel : ObservableObject
             var plants = await this.repository.GetAllAsync();
             var today = DateTime.Today;
             var windowEnd = today.AddDays(7);
+
+            if (this.IsWeatherAwareEnabled)
+            {
+                foreach (var p in plants.Where(p =>
+                    string.Equals(p.Location, "Balcony", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(p.Location, "Garden", StringComparison.OrdinalIgnoreCase)))
+                {
+                    p.IsWeatherAdjusted = true;
+                }
+            }
 
             this.DueTodayPlants = new ObservableCollection<Plant>(
                 plants.Where(p => p.NextWaterDate.HasValue && p.NextWaterDate.Value.Date <= today));

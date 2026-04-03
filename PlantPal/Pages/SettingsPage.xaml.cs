@@ -30,6 +30,9 @@ public partial class SettingsPage : ContentPage
         var savedMinutes = Preferences.Get("reminder_time", 9.0 * 60);
         this.viewModel.ReminderTime = TimeSpan.FromMinutes(savedMinutes);
 
+        // Restore weather-aware watering toggle.
+        this.viewModel.IsWeatherAwareEnabled = Preferences.Get("weather_watering", false);
+
         await this.viewModel.LoadAsync();
     }
 
@@ -43,4 +46,8 @@ public partial class SettingsPage : ContentPage
         if (e.PropertyName != nameof(TimePicker.Time)) return;
         Preferences.Set("reminder_time", this.viewModel.ReminderTime.TotalMinutes);
     }
+
+    /// <summary>Persists the weather-aware watering toggle to Preferences when it changes.</summary>
+    private void OnWeatherToggled(object? sender, ToggledEventArgs e) =>
+        Preferences.Set("weather_watering", e.Value);
 }

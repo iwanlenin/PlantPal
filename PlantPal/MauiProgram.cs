@@ -38,7 +38,12 @@ public static class MauiProgram
             new WateringLogRepository(dbPath));
         builder.Services.AddSingleton<CoreInterfaces.IPermissionService, PermissionService>();
         builder.Services.AddSingleton<CoreInterfaces.INotificationScheduler, MauiNotificationScheduler>();
-        builder.Services.AddSingleton<CoreInterfaces.INotificationService, NotificationService>();
+        builder.Services.AddSingleton<CoreInterfaces.IWeatherService, WeatherService>();
+        builder.Services.AddSingleton<CoreInterfaces.INotificationService>(sp =>
+            new NotificationService(
+                sp.GetRequiredService<CoreInterfaces.IPermissionService>(),
+                sp.GetRequiredService<CoreInterfaces.INotificationScheduler>(),
+                sp.GetRequiredService<CoreInterfaces.IWeatherService>()));
         builder.Services.AddSingleton<IConnectivityService, ConnectivityService>();
         builder.Services.AddSingleton<CoreInterfaces.IHttpClientWrapper, HttpClientWrapper>();
         builder.Services.AddSingleton<IPlantSpeciesService, PlantSpeciesService>();

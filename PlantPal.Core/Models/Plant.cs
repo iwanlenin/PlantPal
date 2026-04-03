@@ -32,6 +32,13 @@ public class Plant
     public string? PhotoPath { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether this plant's watering reminder is currently
+    /// weather-adjusted. Not persisted — set at runtime by the ViewModel when the feature is active.
+    /// </summary>
+    [SQLite.Ignore]
+    public bool IsWeatherAdjusted { get; set; }
+
+    /// <summary>
     /// Recalculates <see cref="NextWaterDate"/> based on <see cref="LastWateredDate"/>
     /// and <see cref="WateringIntervalDays"/>. Has no effect if <see cref="LastWateredDate"/> is null.
     /// </summary>

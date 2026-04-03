@@ -185,11 +185,24 @@
                                         </Border>
 
                                         <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
-                                            <Label
-                                                Text="{Binding Name}"
-                                                FontSize="16"
-                                                FontAttributes="Bold"
-                                                TextColor="{StaticResource TextPrimary}" />
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label
+                                                    Text="{Binding Name}"
+                                                    FontSize="16"
+                                                    FontAttributes="Bold"
+                                                    TextColor="{StaticResource TextPrimary}" />
+                                                <Border
+                                                    IsVisible="{Binding IsWeatherAdjusted}"
+                                                    BackgroundColor="{StaticResource TertiaryContainer}"
+                                                    StrokeThickness="0"
+                                                    Padding="6,2"
+                                                    StrokeShape="RoundRectangle 9999"
+                                                    VerticalOptions="Center">
+                                                    <Label
+                                                        Text="🌧️"
+                                                        FontSize="11" />
+                                                </Border>
+                                            </HorizontalStackLayout>
                                             <Label
                                                 FontSize="12"
                                                 TextColor="{StaticResource TextSecondary}">
@@ -259,11 +272,24 @@
                                                 Aspect="AspectFill" />
                                         </Border>
                                         <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
-                                            <Label
-                                                Text="{Binding Name}"
-                                                FontSize="14"
-                                                FontAttributes="Bold"
-                                                TextColor="{StaticResource TextPrimary}" />
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label
+                                                    Text="{Binding Name}"
+                                                    FontSize="14"
+                                                    FontAttributes="Bold"
+                                                    TextColor="{StaticResource TextPrimary}" />
+                                                <Border
+                                                    IsVisible="{Binding IsWeatherAdjusted}"
+                                                    BackgroundColor="{StaticResource TertiaryContainer}"
+                                                    StrokeThickness="0"
+                                                    Padding="6,2"
+                                                    StrokeShape="RoundRectangle 9999"
+                                                    VerticalOptions="Center">
+                                                    <Label
+                                                        Text="🌧️"
+                                                        FontSize="11" />
+                                                </Border>
+                                            </HorizontalStackLayout>
                                             <Label
                                                 Text="{Binding Species}"
                                                 FontSize="12"

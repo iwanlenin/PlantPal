@@ -1,14 +1,14 @@
 ---
-name: v1.0 complete — next is v2.0
-description: All 10 v1.0 phases are done and merged to main. v2.0 starts at Phase 11.
+name: Phase 11 done — next is Phase 12
+description: Phases 01–11 complete and on main. 81 tests passing. Next is Phase 12 (Claude Plant Advisor).
 type: project
 ---
 
-v1.0 of PlantPal is feature-complete. All phases 01–10 are committed, PRs merged, and main is up to date (commit fdf2f5d). 74 tests, all passing.
+PlantPal v1.0 (phases 01–10) and v2.0 Phase 11 are complete. All PRs merged, main is up to date. 81 tests passing.
 
-**Why:** Completed across multiple sessions covering scaffold through final polish.
+**Why:** Completed across multiple sessions.
 
-**How to apply:** Do not re-implement anything from phases 01–10. Next work is v2.0, starting with Phase 11 (Weather-Adjusted Watering). Read `BUILD_STATUS.md` and `docs/phases/README.md` to confirm state before starting.
+**How to apply:** Do not re-implement anything from phases 01–11. Next work is Phase 12 (Claude Plant Advisor). Read `BUILD_STATUS.md` and `docs/phases/phase-12-claude-advisor.md` to confirm state before starting.
 
 ## Completed phases summary
 - **Phase 01–06 (MVP):** Scaffold, PlantSpeciesService, DatabaseService (SQLite), DashboardViewModel, Dashboard UI + AddPlant form, PermissionService + NotificationService
@@ -16,6 +16,7 @@ v1.0 of PlantPal is feature-complete. All phases 01–10 are committed, PRs merg
 - **Phase 08:** PlantDetailPage, WateringLogRepository, PlantDetailViewModel — hero image, watering history, Water Now, Edit, Delete
 - **Phase 09:** Android home screen widget (AppWidgetProvider), WidgetDbQuery helper in Core (testable), 3 integration tests
 - **Phase 10:** SettingsPage, PlantListPage, 3-tab TabBar, green leaf app icon, dark green splash screen, Water Now animation
+- **Phase 11:** WeatherService (Open-Meteo API), weather-adjusted notifications for outdoor plants (Balcony/Garden), 🌧️ badge on dashboard, Settings toggle
 
 ## Post-v1.0 hotfixes on main
 - Missing `System.ComponentModel` using in `SettingsPage.xaml.cs`
