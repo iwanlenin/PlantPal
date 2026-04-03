@@ -31,4 +31,20 @@ public partial class PlantDetailPage : ContentPage
             }
         }
     }
+
+    /// <summary>Navigates to the Plant Advisor page for the current plant.</summary>
+    private async void OnAskClaudeTapped(object? sender, TappedEventArgs e)
+    {
+        if (this.viewModel.Plant is null)
+        {
+            return;
+        }
+
+        await Shell.Current.GoToAsync("PlantAdvisor", new Dictionary<string, object>
+        {
+            ["plantId"] = this.viewModel.Plant.Id.ToString(),
+            ["species"] = this.viewModel.Plant.Species,
+            ["plantName"] = this.viewModel.Plant.Name,
+        });
+    }
 }

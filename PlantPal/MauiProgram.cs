@@ -54,6 +54,9 @@ public static class MauiProgram
                 sp.GetRequiredService<IPlantSpeciesService>(),
                 Path.Combine(FileSystem.CacheDirectory, "plant_images")));
         builder.Services.AddSingleton<INavigationService, ShellNavigationService>();
+        builder.Services.AddSingleton<CoreInterfaces.ISecureStorageService, SecureStorageService>();
+        builder.Services.AddSingleton<IAdvisorMessageRepository>(new AdvisorMessageRepository(dbPath));
+        builder.Services.AddSingleton<CoreInterfaces.IPlantAdvisorService, PlantAdvisorService>();
 
         // ── ViewModels ────────────────────────────────────────────────────────
         builder.Services.AddTransient<DashboardViewModel>();
@@ -61,6 +64,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PlantDetailViewModel>();
         builder.Services.AddTransient<SettingsViewModel>();
         builder.Services.AddTransient<PlantListViewModel>();
+        builder.Services.AddTransient<PlantAdvisorViewModel>();
 
         // ── Pages ─────────────────────────────────────────────────────────────
         builder.Services.AddTransient<DashboardPage>();
@@ -68,6 +72,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PlantDetailPage>();
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<PlantListPage>();
+        builder.Services.AddTransient<PlantAdvisorPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

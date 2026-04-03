@@ -1,3 +1,5 @@
+using System.Net.Http.Headers;
+using System.Text;
 using PlantPal.Core.Interfaces;
 
 namespace PlantPal.Services;
@@ -16,4 +18,16 @@ public class HttpClientWrapper : IHttpClientWrapper
     /// <inheritdoc />
     public async Task<byte[]> GetBytesAsync(string url) =>
         await Client.GetByteArrayAsync(url);
+
+    /// <inheritdoc />
+    public async Task<string> PostStringAsync(string url, string jsonBody, string bearerToken)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Post, url);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+        request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+        var response = await Client.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStringAsync();
+    }
 }

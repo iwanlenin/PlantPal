@@ -19,6 +19,8 @@
             <conv:InvertedStringToBoolConverter x:Key="InvertedStringToBoolConverter" />
             <conv:ObjectToBoolConverter x:Key="ObjectToBoolConverter" />
             <conv:EditModeTitleConverter x:Key="EditModeTitleConverter" />
+            <conv:RoleToUserBoolConverter x:Key="RoleToUserBoolConverter" />
+            <conv:RoleToAssistantBoolConverter x:Key="RoleToAssistantBoolConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

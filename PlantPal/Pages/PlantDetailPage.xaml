@@ -147,6 +147,25 @@
                 </CollectionView>
             </VerticalStackLayout>
 
+            <!-- Ask Claude button -->
+            <Border
+                BackgroundColor="Transparent"
+                StrokeThickness="1"
+                Stroke="{StaticResource Primary}"
+                HeightRequest="48"
+                StrokeShape="RoundRectangle 9999">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnAskClaudeTapped" />
+                </Border.GestureRecognizers>
+                <Label
+                    Text="Ask Claude 🤖"
+                    FontSize="15"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource Primary}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+            </Border>
+
             <!-- Edit / Delete buttons -->
             <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                 <Border

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:PlantPal.Core.ViewModels;assembly=PlantPal.Core"
+    xmlns:models="clr-namespace:PlantPal.Core.Models;assembly=PlantPal.Core"
+    x:Class="PlantPal.Pages.PlantAdvisorPage"
+    x:DataType="vm:PlantAdvisorViewModel"
+    Title="Plant Advisor"
+    BackgroundColor="{StaticResource Background}"
+    Shell.NavBarIsVisible="True">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto">
+
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Padding="20,16,20,0" Spacing="2">
+            <Label
+                Text="CLAUDE ADVISOR"
+                FontSize="11"
+                TextColor="{StaticResource TextSecondary}"
+                CharacterSpacing="1.5" />
+            <Label
+                Text="{Binding PlantName}"
+                FontSize="22"
+                FontAttributes="Bold"
+                TextColor="{StaticResource TextPrimary}" />
+        </VerticalStackLayout>
+
+        <!-- API key setup banner -->
+        <Border
+            Grid.Row="1"
+            IsVisible="{Binding IsConfigured, Converter={StaticResource InvertedBoolConverter}}"
+            BackgroundColor="{StaticResource TertiaryContainer}"
+            StrokeThickness="0"
+            Padding="16,12"
+            Margin="20,12,20,0"
+            StrokeShape="RoundRectangle 16">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnAddApiKeyTapped" />
+            </Border.GestureRecognizers>
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                    <Label
+                        Text="Add your Anthropic API key"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Tertiary}" />
+                    <Label
+                        Text="Tap here to enter your key and start chatting."
+                        FontSize="12"
+                        TextColor="{StaticResource Tertiary}" />
+                </VerticalStackLayout>
+                <Label
+                    Grid.Column="1"
+                    Text="›"
+                    FontSize="20"
+                    TextColor="{StaticResource Tertiary}"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <!-- Context window selector -->
+        <Border
+            Grid.Row="2"
+            BackgroundColor="{StaticResource SurfaceContainerLow}"
+            StrokeThickness="0"
+            Padding="16,10"
+            Margin="20,12,20,0"
+            StrokeShape="RoundRectangle 12">
+            <VerticalStackLayout Spacing="6">
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto" ColumnSpacing="6">
+                    <Label
+                        Grid.Column="0"
+                        Text="Context"
+                        FontSize="13"
+                        TextColor="{StaticResource TextSecondary}"
+                        VerticalOptions="Center" />
+                    <Border
+                        Grid.Column="1"
+                        StrokeThickness="1"
+                        Padding="10,4"
+                        StrokeShape="RoundRectangle 9999">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding ContextWindowSize}" Value="10">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding ContextWindowSize}" Value="20">
+                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                <Setter Property="Stroke" Value="{StaticResource TextSecondary}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding ContextWindowSize}" Value="50">
+                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                <Setter Property="Stroke" Value="{StaticResource TextSecondary}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Border" Binding="{Binding ContextWindowSize}" Value="0">
+                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                <Setter Property="Stroke" Value="{StaticResource TextSecondary}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnContextWindowTapped" CommandParameter="10" />
+                        </Border.GestureRecognizers>
+                        <Label Text="10" FontSize="12" TextColor="{StaticResource TextOnPrimary}" />
+                    </Border>
+                    <Border
+                        Grid.Column="2"
+                        StrokeThickness="1"
+                        Stroke="{StaticResource TextSecondary}"
+                        Padding="10,4"
+                        StrokeShape="RoundRectangle 9999">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding ContextWindowSize}" Value="20">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnContextWindowTapped" CommandParameter="20" />
+                        </Border.GestureRecognizers>
+                        <Label Text="20" FontSize="12" TextColor="{StaticResource TextPrimary}" />
+                    </Border>
+                    <Border
+                        Grid.Column="3"
+                        StrokeThickness="1"
+                        Stroke="{StaticResource TextSecondary}"
+                        Padding="10,4"
+                        StrokeShape="RoundRectangle 9999">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding ContextWindowSize}" Value="50">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnContextWindowTapped" CommandParameter="50" />
+                        </Border.GestureRecognizers>
+                        <Label Text="50" FontSize="12" TextColor="{StaticResource TextPrimary}" />
+                    </Border>
+                    <Border
+                        Grid.Column="4"
+                        StrokeThickness="1"
+                        Stroke="{StaticResource TextSecondary}"
+                        Padding="10,4"
+                        StrokeShape="RoundRectangle 9999">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding ContextWindowSize}" Value="0">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter Property="Stroke" Value="{StaticResource Primary}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnContextWindowTapped" CommandParameter="0" />
+                        </Border.GestureRecognizers>
+                        <Label Text="All" FontSize="12" TextColor="{StaticResource TextPrimary}" />
+                    </Border>
+                </Grid>
+                <Label
+                    IsVisible="{Binding IsCostHintVisible}"
+                    Text="⚠️ Larger context sends more history to Claude and increases API token usage."
+                    FontSize="11"
+                    TextColor="{StaticResource TextSecondary}" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Chat messages -->
+        <CollectionView
+            x:Name="ChatCollectionView"
+            Grid.Row="3"
+            ItemsSource="{Binding Messages}"
+            Margin="20,12,20,0">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:AdvisorMessage">
+                    <Grid>
+                        <!-- User bubble (right) -->
+                        <Border
+                            IsVisible="{Binding Role, Converter={StaticResource RoleToUserBoolConverter}}"
+                            BackgroundColor="{StaticResource Primary}"
+                            StrokeThickness="0"
+                            Padding="14,10"
+                            MaximumWidthRequest="280"
+                            HorizontalOptions="End"
+                            StrokeShape="RoundRectangle 18,18,4,18">
+                            <Label
+                                Text="{Binding Content}"
+                                FontSize="14"
+                                TextColor="{StaticResource TextOnPrimary}"
+                                LineBreakMode="WordWrap" />
+                        </Border>
+                        <!-- Assistant bubble (left) -->
+                        <Border
+                            IsVisible="{Binding Role, Converter={StaticResource RoleToAssistantBoolConverter}}"
+                            BackgroundColor="{StaticResource SurfaceContainerLow}"
+                            StrokeThickness="0"
+                            Padding="14,10"
+                            MaximumWidthRequest="280"
+                            HorizontalOptions="Start"
+                            StrokeShape="RoundRectangle 18,18,18,4">
+                            <Label
+                                Text="{Binding Content}"
+                                FontSize="14"
+                                TextColor="{StaticResource TextPrimary}"
+                                LineBreakMode="WordWrap" />
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8" Padding="0,40">
+                    <Label
+                        Text="Ask me anything about your plant."
+                        FontSize="15"
+                        TextColor="{StaticResource TextSecondary}"
+                        HorizontalOptions="Center" />
+                    <!-- Quick question chips -->
+                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Border
+                            BackgroundColor="{StaticResource SurfaceContainerLow}"
+                            StrokeThickness="0"
+                            Padding="12,6"
+                            StrokeShape="RoundRectangle 9999">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnQuickQuestionTapped" CommandParameter="Is my watering schedule right?" />
+                            </Border.GestureRecognizers>
+                            <Label Text="Is my schedule right?" FontSize="12" TextColor="{StaticResource TextPrimary}" />
+                        </Border>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Border
+                            BackgroundColor="{StaticResource SurfaceContainerLow}"
+                            StrokeThickness="0"
+                            Padding="12,6"
+                            StrokeShape="RoundRectangle 9999">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnQuickQuestionTapped" CommandParameter="My leaves are yellowing, what's wrong?" />
+                            </Border.GestureRecognizers>
+                            <Label Text="Leaves yellowing?" FontSize="12" TextColor="{StaticResource TextPrimary}" />
+                        </Border>
+                        <Border
+                            BackgroundColor="{StaticResource SurfaceContainerLow}"
+                            StrokeThickness="0"
+                            Padding="12,6"
+                            StrokeShape="RoundRectangle 9999">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnQuickQuestionTapped" CommandParameter="Which fertilizer should I use?" />
+                            </Border.GestureRecognizers>
+                            <Label Text="Which fertilizer?" FontSize="12" TextColor="{StaticResource TextPrimary}" />
+                        </Border>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+
+        <!-- Loading indicator -->
+        <ActivityIndicator
+            Grid.Row="3"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            HorizontalOptions="Center"
+            VerticalOptions="End"
+            Margin="0,0,0,8"
+            Color="{StaticResource Primary}" />
+
+        <!-- Input bar -->
+        <Grid
+            Grid.Row="4"
+            ColumnDefinitions="*,Auto"
+            ColumnSpacing="10"
+            Padding="20,10,20,20"
+            BackgroundColor="{StaticResource Background}">
+            <Border
+                Grid.Column="0"
+                BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                StrokeThickness="0"
+                Padding="14,0"
+                StrokeShape="RoundRectangle 24">
+                <Entry
+                    x:Name="QuestionEntry"
+                    Text="{Binding CurrentQuestion}"
+                    Placeholder="Ask about your plant…"
+                    PlaceholderColor="{StaticResource TextSecondary}"
+                    TextColor="{StaticResource TextPrimary}"
+                    FontSize="15"
+                    BackgroundColor="Transparent"
+                    ReturnCommand="{Binding SendCommand}" />
+            </Border>
+            <Button
+                Grid.Column="1"
+                Text="→"
+                FontSize="20"
+                TextColor="{StaticResource TextOnPrimary}"
+                Background="{StaticResource PrimaryGradientBrush}"
+                CornerRadius="24"
+                WidthRequest="48"
+                HeightRequest="48"
+                Padding="0"
+                Command="{Binding SendCommand}"
+                IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}" />
+        </Grid>
+
+    </Grid>
+</ContentPage>
