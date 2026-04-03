@@ -28,4 +28,11 @@ public interface IPlantAdvisorService
     /// Returns a user-friendly error string on any failure — never throws.
     /// </summary>
     Task<string> AskAboutPlantAsync(string species, string question, IList<AdvisorMessage> context);
+
+    /// <summary>
+    /// Sends a photo of a plant to Claude and returns a full health diagnosis.
+    /// The image is sent as a base64-encoded vision message.
+    /// Returns a user-friendly error string on any failure — never throws.
+    /// </summary>
+    Task<string> DiagnosePlantAsync(string species, string question, byte[] imageBytes, string mimeType, IList<AdvisorMessage> context);
 }

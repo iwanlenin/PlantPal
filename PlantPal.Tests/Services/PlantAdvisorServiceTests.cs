@@ -116,6 +116,46 @@ public class PlantAdvisorServiceTests
         Assert.DoesNotContain("exception", result, StringComparison.OrdinalIgnoreCase);
     }
 
+    // ── DiagnosePlantAsync (vision) ────────────────────────────────────────────
+
+    [Fact]
+    public async Task DiagnosePlantAsync_WhenNotConfigured_ReturnsSetupMessage()
+    {
+        this.secureStorage.GetAsync("anthropic_api_key").Returns((string?)null);
+        await this.sut.InitialiseAsync();
+
+        var result = await this.sut.DiagnosePlantAsync("Monstera", "What's wrong?", [0xFF, 0xD8], "image/jpeg", []);
+
+        Assert.Equal("Please add your Anthropic API key in Settings", result);
+        await this.http.DidNotReceive().PostStringAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+    }
+
+    [Fact]
+    public async Task DiagnosePlantAsync_ValidResponse_ReturnsContent()
+    {
+        this.secureStorage.GetAsync("anthropic_api_key").Returns("sk-test-key");
+        await this.sut.InitialiseAsync();
+        this.http.PostStringAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
+            .Returns(BuildResponse("Your plant looks healthy but slightly overwatered."));
+
+        var result = await this.sut.DiagnosePlantAsync("Monstera", "Diagnose this", [0xFF, 0xD8], "image/jpeg", []);
+
+        Assert.Equal("Your plant looks healthy but slightly overwatered.", result);
+    }
+
+    [Fact]
+    public async Task DiagnosePlantAsync_Api401_ReturnsInvalidKeyMessage()
+    {
+        this.secureStorage.GetAsync("anthropic_api_key").Returns("sk-bad-key");
+        await this.sut.InitialiseAsync();
+        this.http.PostStringAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
+            .ThrowsAsync(new HttpRequestException("Unauthorized", null, System.Net.HttpStatusCode.Unauthorized));
+
+        var result = await this.sut.DiagnosePlantAsync("Monstera", "Diagnose", [0xFF], "image/jpeg", []);
+
+        Assert.Equal("API key invalid — check Settings", result);
+    }
+
     // ── Helpers ────────────────────────────────────────────────────────────────
 
     private static string BuildResponse(string text) =>

@@ -21,6 +21,7 @@ public partial class PlantAdvisorPage : ContentPage
         this.BindingContext = viewModel;
 
         this.viewModel.Messages.CollectionChanged += this.OnMessagesChanged;
+        this.viewModel.PropertyChanged += this.OnViewModelPropertyChanged;
     }
 
     /// <summary>Shell query parameter — sets the plant ID on the ViewModel.</summary>
@@ -85,6 +86,26 @@ public partial class PlantAdvisorPage : ContentPage
         {
             this.viewModel.CurrentQuestion = question;
             await this.viewModel.SendCommand.ExecuteAsync(null);
+        }
+    }
+
+    /// <summary>
+    /// Updates the photo preview image when <see cref="PlantAdvisorViewModel.AttachedImageBytes"/> changes.
+    /// </summary>
+    private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(PlantAdvisorViewModel.AttachedImageBytes))
+        {
+            return;
+        }
+
+        if (this.viewModel.AttachedImageBytes is { Length: > 0 } bytes)
+        {
+            this.AttachedPhotoPreview.Source = ImageSource.FromStream(() => new MemoryStream(bytes));
+        }
+        else
+        {
+            this.AttachedPhotoPreview.Source = null;
         }
     }
 

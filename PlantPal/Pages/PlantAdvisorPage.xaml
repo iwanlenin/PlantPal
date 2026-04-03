@@ -264,42 +264,125 @@
             Margin="0,0,0,8"
             Color="{StaticResource Primary}" />
 
-        <!-- Input bar -->
-        <Grid
+        <!-- Input area (photo preview + input bar) -->
+        <VerticalStackLayout
             Grid.Row="4"
-            ColumnDefinitions="*,Auto"
-            ColumnSpacing="10"
-            Padding="20,10,20,20"
+            Spacing="0"
             BackgroundColor="{StaticResource Background}">
-            <Border
-                Grid.Column="0"
-                BackgroundColor="{StaticResource SurfaceContainerHighest}"
-                StrokeThickness="0"
-                Padding="14,0"
-                StrokeShape="RoundRectangle 24">
-                <Entry
-                    x:Name="QuestionEntry"
-                    Text="{Binding CurrentQuestion}"
-                    Placeholder="Ask about your plant…"
-                    PlaceholderColor="{StaticResource TextSecondary}"
-                    TextColor="{StaticResource TextPrimary}"
-                    FontSize="15"
-                    BackgroundColor="Transparent"
-                    ReturnCommand="{Binding SendCommand}" />
-            </Border>
-            <Button
-                Grid.Column="1"
-                Text="→"
-                FontSize="20"
-                TextColor="{StaticResource TextOnPrimary}"
-                Background="{StaticResource PrimaryGradientBrush}"
-                CornerRadius="24"
-                WidthRequest="48"
-                HeightRequest="48"
-                Padding="0"
-                Command="{Binding SendCommand}"
-                IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}" />
-        </Grid>
+
+            <!-- Photo preview strip (visible only when a photo is attached) -->
+            <Grid
+                IsVisible="{Binding HasAttachedPhoto}"
+                Padding="20,8,20,0"
+                ColumnDefinitions="Auto,*,Auto"
+                ColumnSpacing="10">
+                <Border
+                    Grid.Column="0"
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    WidthRequest="52"
+                    HeightRequest="52"
+                    StrokeShape="RoundRectangle 12">
+                    <Image
+                        x:Name="AttachedPhotoPreview"
+                        Aspect="AspectFill" />
+                </Border>
+                <Label
+                    Grid.Column="1"
+                    Text="📷 Photo attached"
+                    FontSize="13"
+                    TextColor="{StaticResource TextSecondary}"
+                    VerticalOptions="Center" />
+                <Border
+                    Grid.Column="2"
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    WidthRequest="32"
+                    HeightRequest="32"
+                    StrokeShape="RoundRectangle 9999">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding RemovePhotoCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        Text="✕"
+                        FontSize="14"
+                        TextColor="{StaticResource TextSecondary}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </Border>
+            </Grid>
+
+            <!-- Input bar -->
+            <Grid
+                ColumnDefinitions="Auto,Auto,*,Auto"
+                ColumnSpacing="8"
+                Padding="20,10,20,20">
+                <!-- Gallery button -->
+                <Border
+                    Grid.Column="0"
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    WidthRequest="44"
+                    HeightRequest="44"
+                    StrokeShape="RoundRectangle 22">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AttachPhotoFromGalleryCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        Text="🖼"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </Border>
+                <!-- Camera button -->
+                <Border
+                    Grid.Column="1"
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    WidthRequest="44"
+                    HeightRequest="44"
+                    StrokeShape="RoundRectangle 22">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AttachPhotoFromCameraCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        Text="📷"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
+                </Border>
+                <!-- Text input -->
+                <Border
+                    Grid.Column="2"
+                    BackgroundColor="{StaticResource SurfaceContainerHighest}"
+                    StrokeThickness="0"
+                    Padding="14,0"
+                    StrokeShape="RoundRectangle 24">
+                    <Entry
+                        x:Name="QuestionEntry"
+                        Text="{Binding CurrentQuestion}"
+                        Placeholder="Ask about your plant…"
+                        PlaceholderColor="{StaticResource TextSecondary}"
+                        TextColor="{StaticResource TextPrimary}"
+                        FontSize="15"
+                        BackgroundColor="Transparent"
+                        ReturnCommand="{Binding SendCommand}" />
+                </Border>
+                <!-- Send button -->
+                <Button
+                    Grid.Column="3"
+                    Text="→"
+                    FontSize="20"
+                    TextColor="{StaticResource TextOnPrimary}"
+                    Background="{StaticResource PrimaryGradientBrush}"
+                    CornerRadius="24"
+                    WidthRequest="48"
+                    HeightRequest="48"
+                    Padding="0"
+                    Command="{Binding SendCommand}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}" />
+            </Grid>
+        </VerticalStackLayout>
 
     </Grid>
 </ContentPage>

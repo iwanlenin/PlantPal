@@ -88,6 +88,39 @@ public class PlantAdvisorService : IPlantAdvisorService
         }
     }
 
+    /// <inheritdoc />
+    public async Task<string> DiagnosePlantAsync(
+        string species,
+        string question,
+        byte[] imageBytes,
+        string mimeType,
+        IList<AdvisorMessage> context)
+    {
+        if (!this.IsConfigured)
+        {
+            return "Please add your Anthropic API key in Settings";
+        }
+
+        try
+        {
+            var body = this.BuildVisionRequestBody(species, question, imageBytes, mimeType, context);
+            var json = await this.http.PostStringAsync(ApiUrl, body, this.cachedApiKey!);
+            return this.ParseResponse(json);
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            return "API key invalid — check Settings";
+        }
+        catch (TaskCanceledException)
+        {
+            return "Couldn't reach Claude — check your connection";
+        }
+        catch
+        {
+            return "Something went wrong — please try again";
+        }
+    }
+
     /// <summary>Builds the Anthropic Messages API JSON request body.</summary>
     private string BuildRequestBody(string species, string question, IList<AdvisorMessage> context)
     {
@@ -106,6 +139,63 @@ public class PlantAdvisorService : IPlantAdvisorService
             max_tokens = 1024,
             system = $"You are a plant care expert. The user is asking about their {species}. Give practical, concise advice.",
             messages
+        };
+
+        return JsonSerializer.Serialize(payload);
+    }
+
+    /// <summary>
+    /// Builds the Anthropic Messages API JSON body for a vision request.
+    /// The final user message contains an image block followed by a text block.
+    /// </summary>
+    private string BuildVisionRequestBody(
+        string species,
+        string question,
+        byte[] imageBytes,
+        string mimeType,
+        IList<AdvisorMessage> context)
+    {
+        var messages = new List<object>();
+
+        foreach (var msg in context)
+        {
+            messages.Add(new { role = msg.Role, content = msg.Content });
+        }
+
+        // The vision message has array content: image block + text block.
+        messages.Add(new
+        {
+            role = "user",
+            content = new object[]
+            {
+                new
+                {
+                    type = "image",
+                    source = new
+                    {
+                        type = "base64",
+                        media_type = mimeType,
+                        data = Convert.ToBase64String(imageBytes),
+                    },
+                },
+                new
+                {
+                    type = "text",
+                    text = string.IsNullOrWhiteSpace(question)
+                        ? "Please give a full health diagnosis of my plant."
+                        : question,
+                },
+            },
+        });
+
+        var payload = new
+        {
+            model = Model,
+            max_tokens = 1024,
+            system = $"You are a plant health expert. The user is sharing a photo of their {species}. " +
+                     "Provide a comprehensive diagnosis: identify any visible issues such as pests, disease, " +
+                     "overwatering, underwatering, or nutrient deficiencies. Give specific actionable care recommendations.",
+            messages,
         };
 
         return JsonSerializer.Serialize(payload);
