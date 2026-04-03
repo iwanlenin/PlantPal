@@ -56,7 +56,8 @@
       "Bash(./scripts/new-branch.sh \"feature/phase-09-android-widget\")",
       "Bash(./scripts/commit-phase.sh \"feat: Android home screen widget with hourly updates\")",
       "Bash(./scripts/new-branch.sh \"feature/phase-10-settings-polish\")",
-      "Bash(./scripts/commit-phase.sh \"feat: settings page, tab bar, app icon, polish\")"
+      "Bash(./scripts/commit-phase.sh \"feat: settings page, tab bar, app icon, polish\")",
+      "Bash(ls C:/Development/Claude/PlantApp/.claude/feedback_*.md)"
     ]
   }
 }
