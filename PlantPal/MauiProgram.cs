@@ -59,6 +59,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<CoreInterfaces.IPlantAdvisorService, PlantAdvisorService>();
         builder.Services.AddSingleton<CoreInterfaces.ISupabaseClient, SupabaseClientService>();
         builder.Services.AddSingleton<CoreInterfaces.ISyncService, SyncService>();
+        builder.Services.AddSingleton<CoreInterfaces.IMediaPickerService, MediaPickerService>();
 
         // ── ViewModels ────────────────────────────────────────────────────────
         builder.Services.AddTransient<DashboardViewModel>();
