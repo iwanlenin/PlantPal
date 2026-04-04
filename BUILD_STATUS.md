@@ -16,3 +16,4 @@
 - [x] v2.0 Phase 1: Weather adjustment
 - [x] v2.0 Phase 2: Claude Plant Advisor
 - [x] v2.0 Phase 3: Cloud sync
+- [x] v2.0 Phase 4: Plant health photo diagnosis
