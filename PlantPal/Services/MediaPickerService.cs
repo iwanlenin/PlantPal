@@ -47,7 +47,15 @@ public class MediaPickerService : IMediaPickerService
         }
     }
 
-    /// <summary>Reads the stream from a <see cref="FileResult"/> into a byte array.</summary>
+    /// <summary>
+    /// Reads a <see cref="FileResult"/> stream into a byte array and detects its MIME type.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="FileResult.ContentType"/> is not always populated reliably on Android and iOS,
+    /// so MIME type is derived from the file extension instead. The bytes are read into a
+    /// <see cref="MemoryStream"/> because the platform stream may not support seeking, and the
+    /// Anthropic vision API requires the complete byte array for base64 encoding.
+    /// </remarks>
     private async Task<PhotoResult> ReadPhotoAsync(FileResult file)
     {
         await using var stream = await file.OpenReadAsync();
@@ -60,7 +68,15 @@ public class MediaPickerService : IMediaPickerService
         };
     }
 
-    /// <summary>Returns the MIME type based on file extension. Defaults to image/jpeg.</summary>
+    /// <summary>
+    /// Maps a file extension to its MIME type. Returns <c>image/jpeg</c> for any unrecognised extension.
+    /// </summary>
+    /// <remarks>
+    /// JPEG is the default because Android and iOS cameras produce JPEG files in the vast majority
+    /// of cases. The extension is lowercased before comparison so mixed-case names (.JPG, .Jpg)
+    /// are handled correctly. GIF is included for completeness even though it is rarely used
+    /// for plant photos; the Anthropic vision API accepts all four supported types.
+    /// </remarks>
     private static string GetMimeType(string fileName)
     {
         var ext = Path.GetExtension(fileName).ToLowerInvariant();

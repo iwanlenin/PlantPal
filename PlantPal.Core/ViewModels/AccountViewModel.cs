@@ -39,7 +39,10 @@ public partial class AccountViewModel : ObservableObject
     [ObservableProperty]
     private bool isOffline;
 
-    /// <summary>Gets or sets the formatted last-synced time string, e.g. "Last synced: 14:32".</summary>
+    /// <summary>
+    /// Human-readable last-sync timestamp, e.g. "Last synced: 14:32" or "Never synced".
+    /// Displayed in the Account page below the user email. Time is shown in device local time.
+    /// </summary>
     [ObservableProperty]
     private string lastSyncedText = "Never synced";
 
@@ -68,7 +71,11 @@ public partial class AccountViewModel : ObservableObject
         this.syncService.StatusChanged += this.OnSyncStatusChanged;
     }
 
-    /// <summary>Loads the current session state. Call from the page's OnAppearing.</summary>
+    /// <summary>
+    /// Refreshes all UI-facing properties from the current service state.
+    /// Must be called from the page's <c>OnAppearing</c> to reflect changes that
+    /// occurred while the page was off-screen (e.g. a sync completing in the background).
+    /// </summary>
     public void Refresh()
     {
         this.IsSignedIn = this.supabaseClient.IsSignedIn;
@@ -142,6 +149,17 @@ public partial class AccountViewModel : ObservableObject
         await this.syncService.SyncDownAsync();
     }
 
+    /// <summary>
+    /// Responds to <see cref="ISyncService.StatusChanged"/> by updating all sync-related
+    /// UI properties. Subscribed in the constructor; no unsubscription is needed because
+    /// both this ViewModel and <see cref="ISyncService"/> share the same DI lifetime (singleton).
+    /// </summary>
+    /// <remarks>
+    /// <see cref="IsOffline"/> is true when either the sync service reports
+    /// <see cref="SyncStatus.Offline"/> OR the connectivity service has no connection.
+    /// Both conditions are checked so the offline banner appears even if sync hasn't been
+    /// attempted yet (e.g., the user is not signed in but is offline).
+    /// </remarks>
     private void OnSyncStatusChanged(object? sender, EventArgs e)
     {
         this.IsSyncing = this.syncService.Status == SyncStatus.Syncing;
