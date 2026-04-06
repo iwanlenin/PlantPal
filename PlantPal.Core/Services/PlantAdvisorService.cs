@@ -121,7 +121,16 @@ public class PlantAdvisorService : IPlantAdvisorService
         }
     }
 
-    /// <summary>Builds the Anthropic Messages API JSON request body.</summary>
+    /// <summary>
+    /// Builds the Anthropic Messages API JSON request body for a text-only conversation turn.
+    /// </summary>
+    /// <remarks>
+    /// Includes the conversation context (previous user and assistant messages) to enable
+    /// multi-turn conversations. The context is a sliding window controlled by the ViewModel —
+    /// only the last N messages are passed in, so this method does not need to truncate further.
+    /// The system prompt positions Claude as a species-specific plant care expert.
+    /// max_tokens of 1024 is a hard ceiling; responses exceeding it are truncated mid-sentence.
+    /// </remarks>
     private string BuildRequestBody(string species, string question, IList<AdvisorMessage> context)
     {
         var messages = new List<object>();
@@ -145,9 +154,18 @@ public class PlantAdvisorService : IPlantAdvisorService
     }
 
     /// <summary>
-    /// Builds the Anthropic Messages API JSON body for a vision request.
-    /// The final user message contains an image block followed by a text block.
+    /// Builds the Anthropic Messages API JSON body for a vision (image analysis) request.
     /// </summary>
+    /// <remarks>
+    /// The Anthropic vision API requires the user message content to be an array of typed blocks
+    /// rather than a plain string. This method produces: image block → text block, which is the
+    /// required ordering. The image is base64-encoded and sent inline in the JSON body — Supabase
+    /// has no file storage role here; the bytes travel directly to the Anthropic API.
+    /// If <paramref name="question"/> is empty, a default diagnosis prompt is substituted so that
+    /// sending a photo with no typed text still produces a useful response.
+    /// The system prompt is specialist-framed to keep Claude focused on health diagnosis
+    /// rather than general plant trivia.
+    /// </remarks>
     private string BuildVisionRequestBody(
         string species,
         string question,
@@ -201,7 +219,17 @@ public class PlantAdvisorService : IPlantAdvisorService
         return JsonSerializer.Serialize(payload);
     }
 
-    /// <summary>Extracts the first text content block from an Anthropic API response.</summary>
+    /// <summary>
+    /// Extracts the first text content block from an Anthropic API response.
+    /// </summary>
+    /// <remarks>
+    /// The Anthropic API always returns a <c>content</c> array; Claude may produce multiple
+    /// blocks (e.g. text + tool use). This method reads only index [0], which is always the
+    /// primary text response for models without tool use. If the API changes its response
+    /// structure, this will throw a <see cref="System.Text.Json.JsonException"/> which the
+    /// callers (<see cref="AskAboutPlantAsync"/> / <see cref="DiagnosePlantAsync"/>) catch
+    /// and convert to a user-friendly error string.
+    /// </remarks>
     private string ParseResponse(string json)
     {
         using var doc = JsonDocument.Parse(json);

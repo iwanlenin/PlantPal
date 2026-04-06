@@ -51,7 +51,7 @@ receive reminders when plants need water.
 | Icons | MauiIcons.Material |
 | Tests | xUnit + NSubstitute (confirmed) |
 | CI | GitHub Actions |
-| Models location | Inside main MAUI project — no shared Models project (confirmed) |
+| Models location | PlantPal.Core/Models/ |
 
 ---
 

@@ -49,21 +49,34 @@ public partial class PlantAdvisorViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(HasAttachedPhoto))]
     private byte[]? attachedImageBytes;
 
-    /// <summary>MIME type of the attached photo.</summary>
+    /// <summary>
+    /// MIME type of the attached photo (e.g. <c>image/jpeg</c>, <c>image/png</c>).
+    /// Set alongside <see cref="AttachedImageBytes"/> by the attach commands and passed
+    /// directly to <see cref="IPlantAdvisorService.DiagnosePlantAsync"/> in the API request.
+    /// </summary>
     [ObservableProperty]
     private string attachedImageMimeType = "image/jpeg";
 
     /// <summary>Gets a value indicating whether a photo is currently attached to the pending message.</summary>
     public bool HasAttachedPhoto => this.AttachedImageBytes is { Length: > 0 };
 
-    /// <summary>True when the service has a valid API key stored.</summary>
+    /// <summary>
+    /// True when a valid Anthropic API key has been configured.
+    /// Controls the visibility of the API key setup banner and the send button's enabled state.
+    /// </summary>
     [ObservableProperty]
     private bool isConfigured;
 
     /// <summary>
-    /// Number of most-recent messages sent as context to the API.
-    /// 0 means all messages are sent.
+    /// Number of most-recent messages sent as context to the API per turn.
+    /// 0 means the entire conversation history is included.
     /// </summary>
+    /// <remarks>
+    /// Smaller windows reduce Anthropic API cost but may cause Claude to lose earlier context.
+    /// Larger windows (or All) give richer answers but increase token usage and cost.
+    /// The user can adjust this via the chip selector in the chat UI. Available options are
+    /// defined in <see cref="ContextWindowOptions"/>.
+    /// </remarks>
     [ObservableProperty]
     private int contextWindowSize = 10;
 
@@ -235,7 +248,15 @@ public partial class PlantAdvisorViewModel : ObservableObject
 
     private bool CanSend() => !this.IsLoading;
 
-    /// <summary>Returns the context slice to send to the API based on <see cref="ContextWindowSize"/>.</summary>
+    /// <summary>
+    /// Returns the context slice to send to the API based on <see cref="ContextWindowSize"/>.
+    /// </summary>
+    /// <remarks>
+    /// When <see cref="ContextWindowSize"/> is 0 or the history is shorter than the window,
+    /// the full conversation is returned. Otherwise the last N messages are taken via
+    /// <c>Skip(count - N)</c>, which removes the oldest messages first (sliding window).
+    /// The returned slice is passed directly to the advisor service as conversation context.
+    /// </remarks>
     private IList<AdvisorMessage> BuildContext()
     {
         if (this.ContextWindowSize == 0 || this.Messages.Count <= this.ContextWindowSize)

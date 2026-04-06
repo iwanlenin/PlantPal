@@ -60,7 +60,11 @@ public class SyncService : ISyncService
         {
             var plants = await this.plantRepository.GetAllAsync();
 
-            // Ensure every plant has a stable sync ID before uploading.
+            // Assign SyncId to any plant that doesn't have one yet.
+            // This can happen for plants created before Phase 13 (pre-sync migration)
+            // or for plants created offline that have not been saved since the upgrade.
+            // SyncId must exist before upload so Supabase can use it as the upsert key
+            // (on_conflict=sync_id). Without it, the upsert would create duplicate rows.
             foreach (var plant in plants.Where(p => string.IsNullOrEmpty(p.SyncId)))
             {
                 plant.SyncId = Guid.NewGuid().ToString();
@@ -132,7 +136,13 @@ public class SyncService : ISyncService
             {
                 if (localBySyncId.TryGetValue(remote.SyncId, out var local))
                 {
-                    // Last-write-wins: only update local if the remote version is newer.
+                    // Last-write-wins conflict resolution: only overwrite the local record if
+                    // the remote version is strictly newer. This protects local edits made
+                    // while offline — if the user edited a plant on this device after the last
+                    // sync, local.UpdatedAt will be newer than remote.UpdatedAt, and the local
+                    // version is kept. The next SyncUpAsync will push the local version up.
+                    // This assumes all device clocks are in sync with UTC; clock skew could
+                    // cause the wrong version to win, but this is acceptable for a personal app.
                     if (remote.UpdatedAt > local.UpdatedAt)
                     {
                         local.Name = remote.Name;
@@ -146,7 +156,10 @@ public class SyncService : ISyncService
                 }
                 else
                 {
-                    // Plant exists on another device but not locally — insert it.
+                    // No local plant has this SyncId — it was created on another device.
+                    // Since there is no conflicting record to merge, we adopt the remote
+                    // data as-is. The remote's UpdatedAt is trusted because it came from
+                    // Supabase, which enforces per-user RLS (only the owner's records are returned).
                     var newPlant = new Plant
                     {
                         SyncId = remote.SyncId,
@@ -197,7 +210,10 @@ public class SyncService : ISyncService
         }
     }
 
-    /// <summary>Updates <see cref="Status"/> and raises <see cref="StatusChanged"/>.</summary>
+    /// <summary>
+    /// Sets <see cref="Status"/> to the new value and fires <see cref="StatusChanged"/> so that
+    /// bound ViewModels (AccountViewModel, DashboardPage) can update their UI immediately.
+    /// </summary>
     private void SetStatus(SyncStatus status)
     {
         this.Status = status;

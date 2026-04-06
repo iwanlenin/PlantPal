@@ -116,7 +116,28 @@ public class SupabaseClientService : ISupabaseClient
     // Private helpers
     // ------------------------------------------------------------------
 
-    /// <summary>Signs in (grant_type=password) or creates an account via the Supabase Auth API.</summary>
+    /// <summary>
+    /// Handles both sign-in and account creation via the Supabase Auth REST API.
+    /// </summary>
+    /// <param name="grantType">"password" for sign-in via token endpoint; "signup" for new account.</param>
+    /// <remarks>
+    /// The two flows differ in endpoint and response shape:
+    ///
+    /// Sign-in (grantType = "password"):
+    ///   POST /auth/v1/token?grant_type=password → { access_token, user: { id } }
+    ///   The JWT is stored in <see cref="ISecureStorageService"/> and used for all
+    ///   subsequent REST calls. This is the normal session flow.
+    ///
+    /// Sign-up (grantType = "signup"):
+    ///   POST /auth/v1/signup → { id, email }
+    ///   No token is issued; Supabase sends a confirmation email.
+    ///   The user must confirm their email and then sign in separately to obtain a token.
+    ///   If email confirmation is disabled in the Supabase project settings, the user
+    ///   will be signed in automatically on the next sign-in attempt.
+    ///
+    /// Returns false on any non-2xx response without logging details to avoid leaking
+    /// credentials into logs.
+    /// </remarks>
     private async Task<bool> AuthenticateAsync(string email, string password, string grantType)
     {
         string url;
@@ -185,7 +206,19 @@ public class SupabaseClientService : ISupabaseClient
         return true;
     }
 
-    /// <summary>Sends an authenticated POST request with a JSON body.</summary>
+    /// <summary>
+    /// Sends an authenticated POST request to a Supabase PostgREST endpoint with a JSON body.
+    /// </summary>
+    /// <remarks>
+    /// Includes both required Supabase auth headers:
+    ///   <c>apikey</c>: the anonymous key that identifies the project (safe to embed in the app).
+    ///   <c>Authorization: Bearer {jwt}</c>: the signed-in user's session token.
+    /// The <c>Prefer: resolution=merge-duplicates</c> header tells PostgREST to perform an
+    /// upsert (insert or update) on conflict with the column specified in the URL's
+    /// <c>on_conflict</c> query parameter (SyncId). Without this header the request would
+    /// fail with a unique constraint violation if the record already exists.
+    /// Throws <see cref="HttpRequestException"/> on non-2xx responses; callers must handle it.
+    /// </remarks>
     private async Task PostJsonAsync<T>(string url, T body)
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, url);
@@ -201,7 +234,15 @@ public class SupabaseClientService : ISupabaseClient
         response.EnsureSuccessStatusCode();
     }
 
-    /// <summary>Sends an authenticated GET request and returns the response body as a string.</summary>
+    /// <summary>
+    /// Sends an authenticated GET request to a Supabase PostgREST endpoint and returns the JSON body.
+    /// </summary>
+    /// <remarks>
+    /// Row-level security (RLS) on the Supabase tables filters the result set automatically:
+    /// the server inspects the JWT's <c>sub</c> claim and returns only rows where
+    /// <c>user_id = auth.uid()</c>. No client-side filtering is needed.
+    /// Throws <see cref="HttpRequestException"/> on non-2xx responses; callers must handle it.
+    /// </remarks>
     private async Task<string> GetJsonAsync(string url)
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, url);

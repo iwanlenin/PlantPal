@@ -17,11 +17,17 @@ public partial class DashboardViewModel : ObservableObject
     private readonly INavigationService navigationService;
     private readonly IPermissionService permissionService;
 
-    /// <summary>Plants that are due for watering today or overdue.</summary>
+    /// <summary>
+    /// Plants whose <see cref="Plant.NextWaterDate"/> is today or in the past (overdue).
+    /// Displayed at the top of the dashboard as the primary call-to-action list.
+    /// </summary>
     [ObservableProperty]
     private ObservableCollection<Plant> dueTodayPlants = [];
 
-    /// <summary>Plants due for watering within the next 7 days (but not today).</summary>
+    /// <summary>
+    /// Plants due for watering within the next 7 days but not yet overdue.
+    /// Gives the user a planning view so they can prepare for upcoming care.
+    /// </summary>
     [ObservableProperty]
     private ObservableCollection<Plant> upcomingPlants = [];
 
@@ -71,8 +77,15 @@ public partial class DashboardViewModel : ObservableObject
     /// <summary>
     /// Loads all plants from the repository and categorises them into
     /// <see cref="DueTodayPlants"/> and <see cref="UpcomingPlants"/>.
-    /// Sets <see cref="HasError"/> if the repository throws.
     /// </summary>
+    /// <remarks>
+    /// Plants with no <see cref="Plant.NextWaterDate"/> (never watered) are excluded from
+    /// both lists — they haven't been assigned a schedule yet so there's nothing to remind about.
+    /// If <see cref="IsWeatherAwareEnabled"/> is true, outdoor plants (Balcony/Garden) are
+    /// flagged with <see cref="Plant.IsWeatherAdjusted"/> = true. This is a UI hint only;
+    /// the actual postponement is applied by <see cref="INotificationService.RescheduleAllAsync"/>.
+    /// Sets <see cref="HasError"/> if the repository throws; the exception is not re-thrown.
+    /// </remarks>
     [RelayCommand]
     public async Task LoadPlantsAsync()
     {
@@ -119,11 +132,17 @@ public partial class DashboardViewModel : ObservableObject
     }
 
     /// <summary>
-    /// Records that the specified plant was watered today, saves it, and reschedules
-    /// its notification. Notification failures are swallowed — saving always completes.
-    /// Does nothing if <paramref name="plant"/> is null.
+    /// Records that <paramref name="plant"/> was watered today, persists it, and reschedules
+    /// its next reminder. Safe to call when notification permission is denied — the save
+    /// always completes regardless of whether the notification can be scheduled.
     /// </summary>
-    /// <param name="plant">The plant that was watered.</param>
+    /// <param name="plant">The plant that was watered. Null is ignored.</param>
+    /// <remarks>
+    /// The notification failure is intentionally swallowed: a denied notification permission
+    /// is a valid app state and must never block the user from logging a watering.
+    /// The dashboard is not automatically reloaded after this call — the plant moves off the
+    /// due list only when <see cref="LoadPlantsCommand"/> is executed again (e.g. on next appear).
+    /// </remarks>
     [RelayCommand]
     public async Task WaterNowAsync(Plant? plant)
     {

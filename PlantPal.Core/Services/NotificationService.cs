@@ -52,6 +52,8 @@ public class NotificationService : INotificationService
             return;
         }
 
+        // 9 AM on the due date — a reasonable morning reminder that doesn't
+        // wake anyone at night but still gives time to water before the day ends.
         var notifyAt = plant.NextWaterDate.Value.Date.AddHours(9);
         var title = $"🌿 Time to water {plant.Name}!";
         var body = $"{plant.Species} in {plant.Location}";
@@ -83,6 +85,10 @@ public class NotificationService : INotificationService
         {
             var notifyAt = plant.NextWaterDate!.Value.Date.AddHours(9);
 
+            // Outdoor plants (Balcony, Garden) get weather-adjusted reminders when rainfall
+            // is detected. Indoor plants are not adjusted because they are unaffected by rain.
+            // GetPostponementDaysAsync returns 0 on any failure (offline, no coords, API error)
+            // so adding it is always safe — it simply has no effect when weather data is unavailable.
             if (this.weatherService is not null && OutdoorLocations.Contains(plant.Location))
             {
                 var postponeDays = await this.weatherService.GetPostponementDaysAsync();
