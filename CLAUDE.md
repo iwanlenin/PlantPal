@@ -30,6 +30,7 @@ Read the mockup PNGs and design-system.md before building any UI in Phase 05+.
 - **Best practices first** — Before writing code, config, or scripts, consider what the community/official docs recommend. Apply the best known approach, not just the first working one.
 - **Fix all 3 platforms** — The app targets Android, iOS, and Windows. If something is missing or broken on any platform, investigate and fix it. Do not explain it away as a rendering difference.
 - **Phase completion** — A phase is only done when: (1) code is committed, (2) PR is created and merged to main, (3) local main is fetched and up-to-date, (4) no open PRs or branches remain.
+- **Never install MCP servers without explicit approval** — Before adding any MCP server (via `claude mcp add`, editing `.mcp.json`, or any other method), explain what it is, what it does, why it is needed, and what access it will have. Wait for explicit confirmation before proceeding. No exceptions.
 
 ---
 
